@@ -1,0 +1,49 @@
+* {
+  box-sizing: border-box;
+}
+
+.App {
+  text-align: center;
+}
+
+.mid {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+table,
+th,
+td {
+  border: 1px solid #000;
+  border-collapse: collapse;
+}
+
+.img {
+  height: 350px;
+  width: 350px;
+}
+
+.home-item1__header {
+  font-size: 2.2em;
+}
+
+.nav__welcome {
+  background-color: #dceaf5;
+}
+
+a:link {
+  text-decoration: none;
+}
+
+a:visited {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+a:active {
+  text-decoration: underline;
+}

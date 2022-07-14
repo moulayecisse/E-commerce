@@ -135,8 +135,7 @@ En tant qu’utilisateur :
 
 En tant qu’utilisateur :
 
-- **Je dois pouvoir accéder à un certain nombre d’articles avec description, photo, caractéristiques et**
-  **prix afin de les visualiser.**
+- Je dois pouvoir accéder à un certain nombre d’articles avec description, photo, caractéristiques et prix afin de les visualiser.
 - Je dois pouvoir trier les articles par descriptif, nom et catégorie afin de les rechercher de manière
   avancée.
 - Je peux mettre des articles dans un panier afin de n’acheter que ce dont je suis vraiment certain.
