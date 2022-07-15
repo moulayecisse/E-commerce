@@ -1,9 +1,8 @@
 import "../App.css";
-import React, { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const SearchResult = () => {
-  const { id } = useParams();
   const navigate = useNavigate();
 
   return (
@@ -19,4 +18,3 @@ const SearchResult = () => {
     </>
   );
 };
-export default SearchResult;

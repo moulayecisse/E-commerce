@@ -1,28 +1,29 @@
+import React, { Fragment } from "react";
 import "./App.css";
-import { Route, Routes } from "react-router-dom";
-import Acceuil from "./components/Acceuil";
 import Navbar from "./components/Navbar";
-import SearchPage from "./components/SearchPage";
-import PersonPage from "./components/PersonPage";
-import Error from "./components/Error.js";
+import ProductList from "./components/ProductList";
+import Default from "./components/Default";
+import Cart from "./components/Cart";
+import Login from "./components/Login";
+import { Route, Routes } from "react-router-dom";
+// import "./css/style.css";
+import Landingpage from "./components/Landingpge";
 
-function App() {
+const App = () => {
   return (
-    <div className="App">
+    <Fragment>
       <Navbar />
       <Routes>
-        <Route path="/" element={<Acceuil />} />
-        <Route path="/search" element={<SearchPage />} />
-        <Route path="/search/:id" element={<PersonPage />} />
-        <Route path="*" element={<Error />} />
-        {/* <Route path="/search/" element={<SearchPage />}>
-          <Route path=":id" element={<Acceuil />} />
-        </Route> */}
-
-        {/* <Route path="/components/SearchPage/:personId" element={<SearchResult />} /> */}
+        <Route path="/list" element={<ProductList />}>
+          <Route path="details" element={<ProductList />} />
+        </Route>
+        <Route path="cart" element={<Cart />} />
+        <Route path="login" element={<Login />} />
+        <Route path="/" element={<Landingpage />} />
+        <Route component={Default} />{" "}
       </Routes>
-    </div>
+    </Fragment>
   );
-}
+};
 
 export default App;

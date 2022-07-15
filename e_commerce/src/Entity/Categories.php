@@ -2,9 +2,9 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use App\Repository\CategoriesRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use App\Repository\CategoriesRepository;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * Categories
@@ -27,14 +27,17 @@ class Categories
      */
     #[ORM\Column(name: 'name', type: 'string', length: 255, nullable: true)]
     private $name;
+
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getName(): ?string
     {
         return $this->name;
     }
+
     public function setName(?string $name): self
     {
         $this->name = $name;

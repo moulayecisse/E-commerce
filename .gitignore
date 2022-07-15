@@ -18,6 +18,8 @@
 .fusebox/
 .grunt
 .lock-wscript
+.idea
+.vscode
 .next
 .node_repl_history
 .npm
