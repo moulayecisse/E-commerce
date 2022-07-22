@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const AddCategorie = () => {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [errors] = useState([]);
   const navigate = useNavigate();
 
   const addCategorie = async () => {
@@ -34,14 +34,13 @@ const AddCategorie = () => {
       <div>
         <title>E-commerce ajouter categorie</title>
       </div>
-
       <button
         onClick={() => navigate(-1)}
-        className="bg-violet-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full"
+        className="z-90 fixed bottom-8 right-8 h-16 w-16 rounded border-0 bg-indigo-500 text-white drop-shadow-md  "
       >
         Back
       </button>
-      <div className={"w-1/2 mx-auto bg-white p-5 rounded-lg"}>
+      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
         <Errors className="mb-5" errors={errors} />
 
         <div>
@@ -51,7 +50,7 @@ const AddCategorie = () => {
             id="name"
             type="text"
             value={name}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setName(event.target.value)}
             required
             autoFocus
@@ -66,13 +65,13 @@ const AddCategorie = () => {
             id="description"
             type="text"
             value={slug}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setSlug(event.target.value)}
             required
           />
         </div>
 
-        <div className="flex items-center justify-end mt-4">
+        <div className="mt-4 flex items-center justify-end">
           <Button onClick={addCategorie} className="ml-3">
             Enregistrer
           </Button>

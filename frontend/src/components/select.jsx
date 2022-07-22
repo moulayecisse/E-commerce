@@ -2,10 +2,11 @@ export default function Select({ data = [], className = "" }) {
   return (
     <>
       <select>
-        {data.map((option) => (
+        {data.map((option, index) => (
           <option
+            key={index}
             value={option.value}
-            className={`${className} outline-none border rounded border-gray-200 h-10 px-2`}
+            className={`${className} h-10 rounded border border-gray-300 px-2 outline-none`}
           >
             {option.name}
           </option>

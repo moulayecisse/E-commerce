@@ -3,11 +3,11 @@ export default function Label({ errors = [], ...props }) {
     <>
       {errors.length > 0 && (
         <div {...props}>
-          <div className="font-medium text-red-600">
+          <div className="font-normal text-red-600">
             Whoops! Something went wrong.
           </div>
 
-          <ul className="mt-3 list-disc list-inside text-sm text-red-600">
+          <ul className="mt-3 list-inside list-disc   text-red-600">
             {errors.map((error) => (
               <li key={error}>{error}</li>
             ))}

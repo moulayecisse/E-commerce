@@ -18,7 +18,7 @@ export default function Register() {
     const user = { firstname, lastname, email, password };
     const apiErrors = {};
     try {
-      const resp = await axios.post("https://127.0.0.1:8000/api/users", user);
+      const resp = await axios.post("https://localhost:8000/api/users", user);
       console.log(resp.data);
     } catch (error) {
       const { violations } = error.response.data;
@@ -36,10 +36,10 @@ export default function Register() {
   return (
     <>
       <div>
-        <title>ergodnc — Register</title>
+        <title>Register</title>
       </div>
 
-      <div className={"w-1/2 mx-auto bg-white p-5 mt-3 rounded-lg"}>
+      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
         <Errors className="mb-5" errors={errors} />
         <div>
           <Label htmlFor="email">Prénom</Label>
@@ -48,7 +48,7 @@ export default function Register() {
             id="firstname"
             type="text"
             value={firstname}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setFirstName(event.target.value)}
             required
             autoFocus
@@ -63,7 +63,7 @@ export default function Register() {
             id="lastname"
             type="text"
             value={lastname}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setLastName(event.target.value)}
             required
             autoFocus
@@ -78,7 +78,7 @@ export default function Register() {
             id="email"
             type="email"
             value={email}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setEmail(event.target.value)}
             required
           />
@@ -91,13 +91,13 @@ export default function Register() {
             id="password"
             type="password"
             value={password}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setPassword(event.target.value)}
             required
           />
         </div>
 
-        <div className="flex items-center justify-end mt-4">
+        <div className="mt-4 flex items-center justify-end">
           <Button onClick={signup} className="ml-3">
             Register
           </Button>

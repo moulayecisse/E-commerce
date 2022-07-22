@@ -3,10 +3,17 @@ import Input from "../../../components/input";
 import Button from "../../../components/button";
 import Errors from "../../../components/errors";
 import axios from "axios";
-import swal from "sweetalert";
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+import { useForm } from "react-hook-form";
 
 export default function Register() {
+  const navigate = useNavigate();
+
+  const { register, handleSubmit } = useForm();
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
   const [price, setPrice] = useState(0);
@@ -22,28 +29,71 @@ export default function Register() {
   }, []);
 
   const getCategories = async () => {
+    const apiErrors = {};
     try {
-      const res = await axios.get("https://127.0.0.1:8000/api/categories");
+      const res = await axios.get("https://localhost:8000/api/categories");
       console.log(res.data["hydra:member"]);
       setDataCategories(res.data["hydra:member"]);
-      // (res.data)
     } catch (error) {
-      console.log(error);
+      const { violations } = error.response.data;
+      if (violations) {
+        console.log(error.response.data.violations);
+        violations.forEach((violation) => {
+          apiErrors[violation.propertyPath] = violation.message;
+        });
+        console.log(apiErrors);
+        setErrors(Object.values(apiErrors));
+      }
     }
   };
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+    formData.append("file", data.file[0]);
 
-  const signup = async () => {
-    const product = { description, name, price, slug, stock, categories };
+    await fetch("https://localhost:8000/api/media_objects", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+      body: formData,
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        const imgId = result.id;
+        console.log("result.id: ", result.id);
+
+        addProduct(imgId);
+
+        // console.warn(result.id);
+      })
+
+      .catch((error) => console.error("error", error));
+  };
+  //console.log(imageId)
+  const addProduct = async (imgId, image) => {
+    const product = {
+      description,
+      name,
+      price,
+      slug,
+      stock,
+      categories,
+      image,
+    };
     product.price = parseFloat(product.price);
     product.stock = parseInt(product.stock);
+
+    product.image = "api/media_objects/" + imgId;
+
     try {
       console.log(product);
       const resp = await axios.post(
-        "https://127.0.0.1:8000/api/products",
+        "https://localhost:8000/api/products",
         product
       );
       console.log(resp.data);
-      swal(resp.data.message);
+      toast.success("Votre article a bien éte ajouté");
+      navigate(-1);
     } catch (error) {
       if (error.response) {
         console.log(error);
@@ -57,8 +107,14 @@ export default function Register() {
       <div>
         <title>E-commerce ajouter article</title>
       </div>
-
-      <div className={"w-1/2 mx-auto bg-white p-5 rounded-lg"}>
+      <button
+        onClick={() => navigate(-1)}
+        className="z-90 fixed bottom-8 right-8 h-16 w-16 rounded-full border-0 bg-indigo-500 text-xl font-bold text-white drop-shadow-md"
+      >
+        Back
+      </button>
+      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
+        <ToastContainer position="top-right" outoClose={3000} />
         <Errors className="mb-5" errors={errors} />
 
         <div>
@@ -68,7 +124,7 @@ export default function Register() {
             id="name"
             type="text"
             value={name}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setName(event.target.value)}
             required
             autoFocus
@@ -83,7 +139,7 @@ export default function Register() {
             id="description"
             type="text"
             value={description}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setDescription(event.target.value)}
             required
           />
@@ -96,7 +152,7 @@ export default function Register() {
             id="text"
             type="number"
             value={price}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setPrice(event.target.value)}
             required
           />
@@ -109,7 +165,7 @@ export default function Register() {
             id="stock"
             type="number"
             value={stock}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setStock(event.target.value)}
             required
           />
@@ -122,7 +178,7 @@ export default function Register() {
             id="slug"
             type="text"
             value={slug}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setSlug(event.target.value)}
             required
           />
@@ -132,43 +188,60 @@ export default function Register() {
           <label htmlFor="countries">Categorie</label>
           <select
             onChange={(event) => setCategories(event.target.value)}
-            className=" "
+            className="focus:ring- indigo-500 focus:border- indigo-500   dark:focus:ring- indigo-500 dark:focus:border- indigo-500 block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-gray-800 dark:border-gray-300 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
           >
             {datacategories.map((option) => (
-              <option value={`api/categories/${option.id}`}>
+              <option key={option.id} value={`api/categories/${option.id}`}>
                 {option.name}
               </option>
             ))}
           </select>
         </div>
 
-        {/* <Select data={categories} /> */}
-
         <div>
-          <label className="">Cover photo</label>
-          <div className=" ">
+          <label className="block   font-normal text-gray-600">
+            Cover photo
+          </label>
+          <div className="mt-1 flex justify-center rounded border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
             <div className="space-y-1 text-center">
-              <div className="flex text-sm text-gray-600">
-                <label htmlFor="file-upload" className=" ">
+              <svg
+                className="mx-auto h-12 w-12 text-gray-400"
+                stroke="currentColor"
+                fill="none"
+                viewBox="0 0 48 48"
+                aria-hidden="true"
+              >
+                <path
+                  d="M28 8H12a4 4 0 00-4 4v20m32-12v8m0 0v8a4 4 0 01-4 4H12a4 4 0 01-4-4v-4m32-4l-3.172-3.172a4 4 0 00-5.656 0L28 28M8 32l9.172-9.172a4 4 0 015.656 0L28 28m0 0l4 4m4-24h8m-4-4v8m-12 4h.02"
+                  strokeWidth={2}
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+              </svg>
+              <div className="flex   text-gray-600">
+                <label
+                  htmlFor="file-upload"
+                  className="text- indigo-500 hover:text- indigo-500 focus-within:ring- indigo-500 relative cursor-pointer rounded bg-white font-normal focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2"
+                >
                   <span>Upload a file</span>
                   <input
                     id="file-upload"
-                    name="file-upload"
+                    name="file"
+                    accept="image/*"
                     type="file"
+                    {...register("file")}
                     className="sr-only"
                   />
                 </label>
                 <p className="pl-1">or drag and drop</p>
               </div>
-              <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+              <p className="  text-gray-500">PNG, JPG, GIF up to 10MB</p>
             </div>
           </div>
         </div>
 
-        <div className="flex items-center justify-end mt-4">
-          <Button onClick={signup} className="ml-3">
-            Register
-          </Button>
+        <div className="mt-2 flex items-center justify-end">
+          <Button onClick={handleSubmit(onSubmit)}>Ajouter un produit</Button>
         </div>
       </div>
     </>

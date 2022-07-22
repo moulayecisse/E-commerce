@@ -4,18 +4,18 @@ import Button from "../../../components/button";
 import Errors from "../../../components/errors";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const UpdateProduct = () => {
   const { id } = useParams();
-  console.log(id);
+  const navigate = useNavigate();
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(0);
-  const [slug, setSlug] = useState("");
-  const [stock, setStock] = useState(0);
-  const [categories, setCategories] = useState("");
-  const [errors, setErrors] = useState([]);
+  const [price, setPrice] = useState(10);
+  const [slug, setSlug] = useState("slug");
+  const [stock, setStock] = useState(20);
+  const [categories, setCategories] = useState("/api/categories/1");
+  const [errors] = useState([]);
 
   const [datacategories, setDataCategories] = useState([]);
   const [item, setData] = useState([]);
@@ -28,7 +28,7 @@ const UpdateProduct = () => {
 
   const getCategories = async () => {
     try {
-      const res = await axios.get("https://127.0.0.1:8000/api/categories");
+      const res = await axios.get("https://localhost:8000/api/categories");
       console.log(res.data["hydra:member"]);
       setDataCategories(res.data["hydra:member"]);
       // (res.data)
@@ -39,7 +39,7 @@ const UpdateProduct = () => {
 
   const getProduct = async () => {
     try {
-      const res = await axios.get("https://127.0.0.1:8000/api/products/" + id);
+      const res = await axios.get("https://localhost:8000/api/products/" + id);
       console.log(res);
       setData(res.data);
       // (res.data)
@@ -55,10 +55,30 @@ const UpdateProduct = () => {
 
     try {
       console.log(product);
-      const resp = await axios.put(
-        "https://127.0.0.1:8000/api/products/" + id,
-        product
-      );
+      const resp = await axios
+        .request({
+          method: "PATCH",
+          url: "https://localhost:8000/api/products/" + id,
+          headers: {
+            accept: "application/ld+json",
+            "Content-Type": "application/merge-patch+json",
+          },
+          data: JSON.stringify({
+            name: name,
+            slug: slug,
+            description: "description",
+            price: parseFloat(product.price),
+            stock: parseInt(product.stock),
+            categories: "/api/categories/2",
+          }),
+        })
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
+      navigate(-1);
       console.log(resp.data);
     } catch (error) {
       if (error.response) {
@@ -75,7 +95,7 @@ const UpdateProduct = () => {
         <title>E-commerce ajouter article</title>
       </div>
 
-      <div className={"w-1/2 mx-auto bg-white p-5 rounded-lg"}>
+      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
         <Errors className="mb-5" errors={errors} />
 
         <div>
@@ -85,7 +105,7 @@ const UpdateProduct = () => {
             id="name"
             type="text"
             defaultValue={item.name}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setName(event.target.value)}
             required
             autoFocus
@@ -100,7 +120,7 @@ const UpdateProduct = () => {
             id="description"
             type="text"
             defaultValue={item.description}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setDescription(event.target.value)}
             required
           />
@@ -113,7 +133,7 @@ const UpdateProduct = () => {
             id="text"
             type="number"
             defaultValue={item.price}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setPrice(event.target.value)}
             required
           />
@@ -126,7 +146,7 @@ const UpdateProduct = () => {
             id="stock"
             type="number"
             defaultValue={item.stock}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setStock(event.target.value)}
             required
           />
@@ -136,10 +156,10 @@ const UpdateProduct = () => {
           <label htmlFor="countries">Categorie</label>
           <select
             onChange={(event) => setCategories(event.target.value)}
-            className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+            className="focus:ring- indigo-500 focus:border- indigo-500   dark:focus:ring- indigo-500 dark:focus:border- indigo-500 block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-gray-800 dark:border-gray-300 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
           >
             {datacategories.map((option) => (
-              <option value={`api/categories/${option.id}`}>
+              <option key={option.id} value={`api/categories/${option.id}`}>
                 {option.name}
               </option>
             ))}
@@ -153,13 +173,13 @@ const UpdateProduct = () => {
             id="slug"
             type="text"
             defaultValue={item.slug}
-            className="block mt-1 w-full"
+            className="mt-1 block w-full"
             onChange={(event) => setSlug(event.target.value)}
             required
           />
         </div>
 
-        <div className="flex items-center justify-end mt-4">
+        <div className="mt-4 flex items-center justify-end">
           <Button onClick={updateProduct} className="ml-3">
             Enregistrer
           </Button>

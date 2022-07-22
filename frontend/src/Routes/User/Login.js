@@ -1,99 +1,93 @@
-import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import Label from "../../components/label";
+import Input from "../../components/input";
+import Button from "../../components/button";
+import { useState } from "react";
 import AuthService from "../../services/auth.service.js";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Login = () => {
-  const form = useRef();
-  const checkBtn = useRef();
-
   const [username, setUsername] = useState("gildas.le-drogoff@epitech.eu");
   const [password, setPassword] = useState("PWD");
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
-
   const navigate = useNavigate();
 
-  const onChangeUsername = (e) => {
-    const username = e.target.value;
-    setUsername(username);
-  };
-
-  const onChangePassword = (e) => {
-    const password = e.target.value;
-    setPassword(password);
-  };
-
-  const handleLogin = (e) => {
-    e.preventDefault();
-
-    setMessage("");
+  const signin = async () => {
     setLoading(true);
-    AuthService.login(username, password).then(
-      () => {
-        setLoading(false);
-
-        // navigate("/profile");
-        window.location.reload();
-      },
-      (error) => {
-        const resMessage =
-          (error.response &&
-            error.response.data &&
-            error.response.data.message) ||
-          error.message ||
-          error.toString();
-
-        setLoading(false);
-        setMessage(resMessage);
-      }
-    );
+    try {
+      await AuthService.login(username, password);
+      setLoading(false);
+      navigate("/");
+      window.location.reload();
+    } catch (error) {
+      setLoading(false);
+      console.log(error);
+      toast.success(error.response.data.message);
+    }
   };
+
   return (
-    <div className="container mt-4">
-      <div className="  ">
-        <form onSubmit={handleLogin} ref={form}>
-          <div className="form-group">
-            <label htmlFor="username">Username</label>
-            <input
-              type="text"
-              className="form-control"
-              name="username"
-              value={username}
-              onChange={onChangeUsername}
-            />
-          </div>
+    <>
+      <div>
+        <title>E-commerce — Register</title>
+      </div>
+      <ToastContainer position="top-right" outoClose={3000} />
+      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
+        <div className="mt-4">
+          <Label htmlFor="username">Email</Label>
 
-          <div className="form-group">
-            <label htmlFor="password">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              name="password"
-              value={password}
-              onChange={onChangePassword}
-            />
-          </div>
+          <Input
+            id="username"
+            type="username"
+            value={username}
+            className="mt-1 block w-full"
+            onChange={(event) => setUsername(event.target.value)}
+            required
+          />
+        </div>
 
-          <div className="form-group py-2">
-            <button className="btn btn-primary btn-block" disabled={loading}>
-              {loading && (
-                <span className="spinner-border pr-5 spinner-border-sm"></span>
-              )}
-              <span>Login</span>
-            </button>
-          </div>
+        <div className="mt-4">
+          <Label htmlFor="password">Password</Label>
 
-          {message && (
-            <div className="form-group">
-              <div className="alert alert-danger" role="alert">
-                {message}
-              </div>
+          <Input
+            id="password"
+            type="password"
+            value={password}
+            className="mt-1 block w-full"
+            onChange={(event) => setPassword(event.target.value)}
+            required
+          />
+        </div>
+
+        <div className="mt-4 flex items-center justify-end">
+          {loading && (
+            <div role="status">
+              <svg
+                aria-hidden="true"
+                className="fill- indigo-500 mr-2 h-8 w-8 animate-spin text-gray-200 dark:text-gray-600"
+                viewBox="0 0 100 101"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
+                  fill="currentColor"
+                ></path>
+                <path
+                  d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
+                  fill="currentFill"
+                ></path>
+              </svg>
+              <span className="sr-only">Loading...</span>
             </div>
           )}
-          <button style={{ display: "none" }} ref={checkBtn} />
-        </form>
+          <Button onClick={signin} className="ml-3" disabled={loading}>
+            Login
+          </Button>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

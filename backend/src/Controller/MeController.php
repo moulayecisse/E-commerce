@@ -1,4 +1,5 @@
 <?php
+declare(strict_types=1);
 
 namespace App\Controller;
 
@@ -12,7 +13,7 @@ class MeController extends AbstractController
         $this->security = $security;
     }
 
-    public function __invoke()
+    public function __invoke(): ?\Symfony\Component\Security\Core\User\UserInterface
     {
         $user = $this->security->getUser();
         // dd($user);
