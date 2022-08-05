@@ -62,12 +62,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $passwordHash = null;
     #[ORM\Column(name: 'password_salt', type: 'string', length: 10, nullable: true)]
     private ?string $passwordSalt = null;
-    #[ORM\Column(name: 'additional_contact_info', type: 'text', length: 16777215, nullable: true)]
+    #[ORM\Column(name: 'additional_contact_info', type: 'text', length: 16_777_215, nullable: true)]
     private ?string $additionalContactInfo = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $modifiedDate = null;
-        public function getId(): ?int
+    public function getId(): ?int
     {
         return $this->id;
     }

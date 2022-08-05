@@ -1,8 +1,7 @@
-import React, { useRef, useState } from "react";
+import React, { useState, useRef } from "react";
 import axios from "axios";
 import { NavLink } from "react-router-dom";
 import Highlighter from "react-highlight-words";
-
 const Search = () => {
   const [state, setState] = useState({
     // un objet qui contient mes variables d'états (1 variable d'état avec plusieurs clés)
@@ -56,70 +55,68 @@ const Search = () => {
   return (
     <>
       <div className="relative w-[560px]">
-        <form class="order-first mb-10 md:order-last md:mb-0 md:pr-8" action="">
-          <input
-            className="mw-72 rounded-full py-1 pl-3 pr-10 focus:outline-0"
-            type="search"
-            placeholder="Recherche"
-            onChange={handleChange}
-          />
-          <button class=" bg-trasparent -ml-8" type="submit">
-            <i class="fa fa-search text-gray-400"></i>
-          </button>
-        </form>
+        <input
+          className="mt-2 h-[42px] w-full border py-2 px-4"
+          type="search"
+          placeholder="Entrer votre recherche"
+          onChange={handleChange}
+        />
 
         {state.searching && (
           <ul className="absolute top-[50px] left-0 right-0 z-10 max-h-[200px] list-none overflow-y-scroll bg-white shadow-md">
-            {state.loading ? (
+            {!state.loading ? (
+              state.datas.length > 0 ? (
+                <>
+                  {state.datas.map((item, index) => {
+                    return (
+                      <>
+                        <li
+                          key={index}
+                          className="cursor-pointer py-2 px-4 transition-colors hover:bg-gray-500 hover:text-white"
+                        >
+                          <img
+                            src={`https://localhost:8000${item.image.contentUrl}`}
+                            alt={item.name}
+                            style={{ width: "3rem" }}
+                          />
+                          <NavLink
+                            to={`/product/${item.id}`}
+                            className="w-1/2 underline"
+                          >
+                            <Highlighter
+                              highlightClassName="highlistClass"
+                              searchWords={maRecherche.split(" ")}
+                              autoEscape={true}
+                              textToHighlight={item.name}
+                            />
+                          </NavLink>
+                          <span> {item.price} €</span>
+                        </li>
+                      </>
+                    );
+                  })}
+                  <button
+                    className="text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
+                    style={{ textAlign: "right", cursor: "pointer" }}
+                  >
+                    <NavLink
+                      className=""
+                      to={`/product/search?name=${encodeURIComponent(
+                        maRecherche
+                      )}`}
+                    >
+                      Voir plus...
+                    </NavLink>
+                  </button>
+                </>
+              ) : (
+                <li className="bg-red-100 py-2 px-4 transition-colors">
+                  Aucun résultats
+                </li>
+              )
+            ) : (
               <li className="bg-green-100 py-2 px-4 transition-colors">
                 Chargement en cours
-              </li>
-            ) : state.datas.length > 0 ? (
-              <>
-                {state.datas.map((item, index) => {
-                  return (
-                    <>
-                      <li
-                        key={index}
-                        className="cursor-pointer py-2 px-4 transition-colors hover:bg-gray-500 hover:text-white"
-                      >
-                        <img
-                          src={`https://localhost:8000${item.image.contentUrl}`}
-                          alt={item.name}
-                          style={{ width: "3rem" }}
-                        />
-                        <NavLink
-                          to={`/product/${item.id}`}
-                          className="w-1/2 underline"
-                        >
-                          <Highlighter
-                            highlightClassName="highlistClass"
-                            searchWords={maRecherche.split(" ")}
-                            autoEscape={true}
-                            textToHighlight={item.name}
-                          />
-                        </NavLink>
-                        <span> {item.price} €</span>
-                      </li>
-                    </>
-                  );
-                })}
-                <button
-                  className="text- indigo-500 visited:text- indigo-500 underline hover:text-blue-800"
-                  style={{ textAlign: "right", cursor: "pointer" }}
-                >
-                  <NavLink
-                    to={`/product/search?name=${encodeURIComponent(
-                      maRecherche
-                    )}`}
-                  >
-                    Voir plus...
-                  </NavLink>
-                </button>
-              </>
-            ) : (
-              <li className="bg-red-100 py-2 px-4 transition-colors">
-                Aucun résultats
               </li>
             )}
           </ul>

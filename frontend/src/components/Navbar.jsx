@@ -116,7 +116,7 @@ const Navbar = () => {
                             key={index}
                             to={`/?categorie=${categorie.slug}`}
                             className={classNames(
-                              active ? " text-gray-900" : "text-gray-600",
+                              active ? " text-gray-900" : "text-gray-50",
                               "block px-3 py-2 "
                             )}
                           >

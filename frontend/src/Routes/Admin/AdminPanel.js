@@ -1,5 +1,6 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import AuthService from "../../services/auth.service";
 
 const AdminPanel = () => {
   return (

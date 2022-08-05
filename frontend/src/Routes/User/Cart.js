@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   addToCart,
   clearCart,
@@ -10,6 +10,7 @@ import {
 } from "./slices/cartSlice";
 import AuthService from "../../services/auth.service";
 import PayButton from "../../components/PayButton";
+import { Link } from "react-router-dom";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -35,7 +36,7 @@ const Cart = () => {
   };
   return (
     <div className="cart-container">
-      <h3>Shopping Cart </h3>
+      <h2>Shopping Cart</h2>
       {cart.cartItems.length === 0 ? (
         <div className="cart-empty">
           <p>Your cart is currently empty</p>

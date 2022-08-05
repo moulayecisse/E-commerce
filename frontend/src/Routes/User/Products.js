@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, Outlet } from "react-router-dom";
 import SearchInput from "../../components/Search";
 import queryString from "query-string";
 import { useDispatch, useSelector } from "react-redux";
 
 import { addToCart } from "./slices/cartSlice";
+import { useGetAllProductsQuery } from "./slices/productsApi";
 import ReactPaginate from "react-paginate";
+import PopularCart from "../../components/PopularCart";
 
 const Products = () => {
   const [itemOffset, setItemOffset] = useState(0);
@@ -15,7 +17,7 @@ const Products = () => {
   const [data, setData] = useState([]);
   const itemsPerPage = 8;
   const dispatch = useDispatch();
-  const { status } = useSelector((state) => state.products);
+  const { items: products, status } = useSelector((state) => state.products);
   // const { data, error, isLoading } = useGetAllProductsQuery();
   // console.log("Api", data);
 
@@ -68,7 +70,10 @@ const Products = () => {
       <div className=" mx-auto flex justify-center pt-10 ">
         <SearchInput />
       </div>
-
+      <div className="container">
+        <h1 className="text-center">Les articles les plus consultés</h1>
+        <PopularCart />
+      </div>
       <div className="bg-white">
         <div className="home-container">
           {status === "success" ? (
@@ -123,16 +128,16 @@ const Products = () => {
                     "relative z-0 inline-flex rounded shadow-md -space-x-px"
                   }
                   pageLinkClassName={
-                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border   font-normal"
+                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-600 relative inline-flex items-center px-4 py-2 border   font-normal"
                   }
                   previousLinkClassName={
-                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border   font-normal"
+                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-600 relative inline-flex items-center px-4 py-2 border   font-normal"
                   }
                   nextLinkClassName={
-                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border   font-normal"
+                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-600 relative inline-flex items-center px-4 py-2 border   font-normal"
                   }
                   breakClassName={
-                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border   font-normal"
+                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-600 relative inline-flex items-center px-4 py-2 border   font-normal"
                   }
                   breakLinkClassName={"page-link"}
                   activeClassName={"active"}

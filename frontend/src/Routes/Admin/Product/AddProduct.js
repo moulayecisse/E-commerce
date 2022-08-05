@@ -2,10 +2,11 @@ import Label from "../../../components/label";
 import Input from "../../../components/input";
 import Button from "../../../components/button";
 import Errors from "../../../components/errors";
+import Select from "../../../components/select";
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useForm } from "react-hook-form";
@@ -71,6 +72,7 @@ export default function Register() {
   };
   //console.log(imageId)
   const addProduct = async (imgId, image) => {
+    const click = 0;
     const product = {
       description,
       name,
@@ -79,6 +81,7 @@ export default function Register() {
       stock,
       categories,
       image,
+      click,
     };
     product.price = parseFloat(product.price);
     product.stock = parseInt(product.stock);
@@ -109,11 +112,11 @@ export default function Register() {
       </div>
       <button
         onClick={() => navigate(-1)}
-        className="z-90 fixed bottom-8 right-8 h-16 w-16 rounded-full border-0 bg-indigo-500 text-xl font-bold text-white drop-shadow-md"
+        className="rounded-full bg-violet-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
       >
         Back
       </button>
-      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
+      <div className={"mx-auto w-1/2 rounded-lg bg-white p-5"}>
         <ToastContainer position="top-right" outoClose={3000} />
         <Errors className="mb-5" errors={errors} />
 
@@ -188,10 +191,10 @@ export default function Register() {
           <label htmlFor="countries">Categorie</label>
           <select
             onChange={(event) => setCategories(event.target.value)}
-            className="focus:ring- indigo-500 focus:border- indigo-500   dark:focus:ring- indigo-500 dark:focus:border- indigo-500 block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-gray-800 dark:border-gray-300 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           >
             {datacategories.map((option) => (
-              <option key={option.id} value={`api/categories/${option.id}`}>
+              <option value={`api/categories/${option.id}`}>
                 {option.name}
               </option>
             ))}
@@ -199,10 +202,10 @@ export default function Register() {
         </div>
 
         <div>
-          <label className="block   font-normal text-gray-600">
+          <label className="block text-sm font-medium text-gray-700">
             Cover photo
           </label>
-          <div className="mt-1 flex justify-center rounded border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
+          <div className="mt-1 flex justify-center rounded-md border-2 border-dashed border-gray-300 px-6 pt-5 pb-6">
             <div className="space-y-1 text-center">
               <svg
                 className="mx-auto h-12 w-12 text-gray-400"
@@ -218,10 +221,10 @@ export default function Register() {
                   strokeLinejoin="round"
                 />
               </svg>
-              <div className="flex   text-gray-600">
+              <div className="flex text-sm text-gray-600">
                 <label
                   htmlFor="file-upload"
-                  className="text- indigo-500 hover:text- indigo-500 focus-within:ring- indigo-500 relative cursor-pointer rounded bg-white font-normal focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2"
+                  className="relative cursor-pointer rounded-md bg-white font-medium text-indigo-600 focus-within:outline-none focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:text-indigo-500"
                 >
                   <span>Upload a file</span>
                   <input
@@ -235,13 +238,15 @@ export default function Register() {
                 </label>
                 <p className="pl-1">or drag and drop</p>
               </div>
-              <p className="  text-gray-500">PNG, JPG, GIF up to 10MB</p>
+              <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
             </div>
           </div>
         </div>
 
-        <div className="mt-2 flex items-center justify-end">
-          <Button onClick={handleSubmit(onSubmit)}>Ajouter un produit</Button>
+        <div className="mt-4 flex items-center justify-end">
+          <Button onClick={handleSubmit(onSubmit)} className="ml-3">
+            Ajouter un produit
+          </Button>
         </div>
       </div>
     </>

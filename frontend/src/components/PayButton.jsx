@@ -1,13 +1,13 @@
 import axios from "axios";
-import AuthService from "../services/auth.service";
+import { useSelector } from "react-redux";
 
 const PayButton = ({ cartItems }) => {
-  const user = AuthService.getCurrentUser();
+  const user = useSelector((state) => state.auth);
+
   const handleCheckout = () => {
     axios
-      .post(`http://localhost:5000/api/stripe/create-checkout-session`, {
+      .post(`https://localhost:8000/checkout`, {
         cartItems,
-        userId: user.id,
       })
       .then((response) => {
         window.location.href = response.data.url;

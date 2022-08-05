@@ -156,7 +156,7 @@ const UpdateProduct = () => {
           <label htmlFor="countries">Categorie</label>
           <select
             onChange={(event) => setCategories(event.target.value)}
-            className="focus:ring- indigo-500 focus:border- indigo-500   dark:focus:ring- indigo-500 dark:focus:border- indigo-500 block w-full rounded border border-gray-300 bg-gray-50 p-2.5 text-gray-800 dark:border-gray-300 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+            className="focus:ring- indigo-500 focus:border- indigo-500   dark:focus:ring- indigo-500 dark:focus:border- indigo-500 block w-full rounded border border-gray-300 bg-gray-600 p-2.5 text-gray-800 dark:border-gray-300 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
           >
             {datacategories.map((option) => (
               <option key={option.id} value={`api/categories/${option.id}`}>
