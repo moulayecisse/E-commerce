@@ -9,6 +9,7 @@ use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Doctrine\DBAL\Types\Types;
+use Doctrine\Common\Collections\Collection;
 
 /**
  * User
@@ -67,6 +68,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $modifiedDate = null;
+
+    #[ORM\OneToMany(targetEntity: Cart::class, mappedBy: 'user')]
+    private $carts;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -252,5 +257,31 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-   
+    /**
+     * @return Collection|Cart[]
+     */
+    public function getCarts(): Collection
+    {
+        return $this->carts;
+    }
+    public function addCart(Cart $cart): self
+    {
+        if (!$this->carts->contains($cart)) {
+            $this->carts[] = $cart;
+            $cart->setUser($this);
+        }
+
+        return $this;
+    }
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->removeElement($cart)) {
+            // set the owning side to null (unless already changed)
+            if ($cart->getUser() === $this) {
+                $cart->setUser(null);
+            }
+        }
+
+        return $this;
+    }
 }

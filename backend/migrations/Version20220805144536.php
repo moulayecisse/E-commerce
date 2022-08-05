@@ -10,7 +10,7 @@ use Doctrine\Migrations\AbstractMigration;
 /**
  * Auto-generated Migration: Please modify to your needs!
  */
-final class Version20220803105621 extends AbstractMigration
+final class Version20220805144536 extends AbstractMigration
 {
     public function getDescription(): string
     {
@@ -31,7 +31,13 @@ final class Version20220803105621 extends AbstractMigration
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
         );
 
-        $this->addSql('CREATE TABLE cart (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, cart_list LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_bin`, date_added_to_cart DATETIME DEFAULT CURRENT_TIMESTAMP, UNIQUE INDEX cart_id_uindex (id), INDEX cart_user_id_fk (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'current_cart_of_the_user\' ');
+        $this->addSql('CREATE TABLE cart (id INT AUTO_INCREMENT NOT NULL, user_id INT NOT NULL, cart_list LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_bin`, status VARCHAR(255) CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, date_added_to_cart DATETIME DEFAULT CURRENT_TIMESTAMP, INDEX cart_user_id_fk (user_id), UNIQUE INDEX cart_id_uindex (id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'current_cart_of_the_user\' ');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MariaDb1027Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
+        );
+
+        $this->addSql('CREATE TABLE cart_product (cart_id INT NOT NULL, product_id INT NOT NULL, INDEX IDX_2890CCAA1AD5CDBF (cart_id), INDEX IDX_2890CCAA4584665A (product_id), PRIMARY KEY(cart_id, product_id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MariaDb1027Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
@@ -55,7 +61,7 @@ final class Version20220803105621 extends AbstractMigration
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
         );
 
-        $this->addSql('CREATE TABLE notation (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, product_id INT NOT NULL, notation_date DATETIME DEFAULT CURRENT_TIMESTAMP, commentary TEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, suggestions TEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, ranking_stars INT DEFAULT NULL, INDEX notation_product_id_fk (product_id), INDEX foreign_key_name (user_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'notation of users\'\'s products\' ');
+        $this->addSql('CREATE TABLE notation (id INT AUTO_INCREMENT NOT NULL, user_id INT DEFAULT NULL, product_id INT NOT NULL, notation_date DATETIME DEFAULT CURRENT_TIMESTAMP, commentary TEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, suggestions TEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, ranking_stars INT DEFAULT NULL, INDEX foreign_key_name (user_id), INDEX notation_product_id_fk (product_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'notation of users\'\'s products\' ');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MariaDb1027Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
@@ -67,13 +73,13 @@ final class Version20220803105621 extends AbstractMigration
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
         );
 
-        $this->addSql('CREATE TABLE orders_details (id INT AUTO_INCREMENT NOT NULL, orders_id INT NOT NULL, product_id INT NOT NULL, quantity INT NOT NULL, price INT NOT NULL, INDEX IDX_835379F14584665A (product_id), UNIQUE INDEX UNIQ_835379F1CFFE9AD6 (orders_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('CREATE TABLE orders_details (id INT AUTO_INCREMENT NOT NULL, orders_id INT NOT NULL, product_id INT NOT NULL, quantity INT NOT NULL, price INT NOT NULL, UNIQUE INDEX UNIQ_835379F1CFFE9AD6 (orders_id), INDEX IDX_835379F14584665A (product_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MariaDb1027Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
         );
 
-        $this->addSql('CREATE TABLE product (id INT AUTO_INCREMENT NOT NULL, categories_id INT DEFAULT NULL, image_id INT DEFAULT NULL, name VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, slug VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, description LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, price DOUBLE PRECISION DEFAULT NULL, stock INT DEFAULT NULL, views INT DEFAULT NULL, click INT DEFAULT 0 NOT NULL, INDEX IDX_D34A04ADA21214B7 (categories_id), INDEX IDX_D34A04AD3DA5256D (image_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
+        $this->addSql('CREATE TABLE product (id INT AUTO_INCREMENT NOT NULL, categories_id INT DEFAULT NULL, image_id INT DEFAULT NULL, name VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, slug VARCHAR(255) CHARACTER SET utf8mb4 NOT NULL COLLATE `utf8mb4_unicode_ci`, description LONGTEXT CHARACTER SET utf8mb4 DEFAULT NULL COLLATE `utf8mb4_unicode_ci`, price DOUBLE PRECISION DEFAULT NULL, stock INT DEFAULT NULL, views INT DEFAULT NULL, click INT DEFAULT 0 NOT NULL, INDEX IDX_D34A04AD3DA5256D (image_id), INDEX IDX_D34A04ADA21214B7 (categories_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB COMMENT = \'\' ');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MariaDb1027Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
@@ -109,6 +115,12 @@ final class Version20220803105621 extends AbstractMigration
         );
 
         $this->addSql('DROP TABLE cart');
+        $this->abortIf(
+            !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MariaDb1027Platform,
+            "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
+        );
+
+        $this->addSql('DROP TABLE cart_product');
         $this->abortIf(
             !$this->connection->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MariaDb1027Platform,
             "Migration can only be executed safely on '\Doctrine\DBAL\Platforms\MariaDb1027Platform'."
