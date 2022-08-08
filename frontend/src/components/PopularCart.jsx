@@ -38,30 +38,19 @@ const PopularCart = () => {
   return (
     <div className="products">
       <Swiper
-        effect={"coverflow"}
         grabCursor={true}
         centeredSlides={true}
         slidesPerView={"auto"}
-        autoplay={{
-          delay: 3000,
-          disableOnInteraction: false,
-        }}
-        coverflowEffect={{
-          rotate: 50,
-          stretch: 0,
-          depth: 100,
-          modifier: 1,
-          slideShadows: true,
-        }}
-        pagination={true}
-        modules={[EffectCoverflow, Pagination, Autoplay]}
+        modules={[EffectCoverflow, Pagination]}
         className="mySwiper"
       >
         {data &&
           data?.map((product, index) => (
             <SwiperSlide>
-              <div key={index}>
-                <h3>{product.name}</h3>
+              <div
+                key={index}
+                className="max-w-sm overflow-hidden rounded shadow-lg"
+              >
                 {product.image && (
                   <img
                     src={`https://localhost:8000${product.image.contentUrl}`}
@@ -72,7 +61,9 @@ const PopularCart = () => {
                   <span>{product.desc}</span>
                   <span className="price">${product.price}</span>
                 </div>
-
+                <div className="mb-2 text-xl font-bold text-gray-900">
+                  {product.name}
+                </div>
                 <NavLink className="button" to={`/product/${product.id}`}>
                   Voir plus
                 </NavLink>

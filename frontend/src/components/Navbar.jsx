@@ -1,5 +1,5 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import React, { Fragment, useState, useEffect } from "react";
+import { NavLink, Link } from "react-router-dom";
 import Dropdown from "./DropdownCart";
 import AuthService from "../services/auth.service";
 import EventBus from "../common/EventBus.js";
@@ -7,8 +7,6 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { useSelector } from "react-redux";
 import axios from "axios";
-import SearchInput from "../components/Search";
-
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -74,22 +72,22 @@ const Navbar = () => {
 
   return (
     <>
-      <nav class="relative flex h-14 items-center items-center justify-between bg-sky-600 px-5 drop-shadow-md">
-        <div>
-          <a href="#" class="text-2xl italic text-white">
-            PC<span class="text-amber-500">Builder</span>
-          </a>
-        </div>
-
-        <div
-          id="main-nav"
-          class="absolute top-14 right-0 flex hidden h-screen flex-col items-center bg-gray-600 px-5 py-10 
- md:relative md:top-0 md:right-0 md:ml-10 md:flex md:h-full md:flex-grow md:flex-row md:items-center md:justify-between md:space-y-0 md:bg-inherit md:p-0"
-        >
-          <div class="order-last flex flex-col items-end space-y-3 text-sky-200 md:order-first md:flex-row md:items-start md:space-y-0 md:space-x-3 ">
-            <Menu as="div" className="relative inline-block text-left ">
+      <div className="bg-white">
+        <main className="">
+          <div className="relative z-10 mx-auto flex max-w-screen-lg flex-row items-center justify-between space-x-2 p-4 align-middle sm:space-x-3 sm:p-7">
+            <NavLink
+              className="relative flex h-14 items-center items-center justify-between  px-5 drop-shadow-md"
+              to="/"
+            >
               <div>
-                <Menu.Button className=" inline-flex w-full justify-center rounded px-3 py-2 text-gray-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-100">
+                <a href="#" class="text-2xl italic text-black">
+                  PC<span class="text-amber-500">Builder</span>
+                </a>
+              </div>
+            </NavLink>
+            <Menu as="div" className="relative inline-block text-left">
+              <div>
+                <Menu.Button className="inline-flex w-full justify-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-100">
                   Categories
                   <ChevronDownIcon
                     className="-mr-1 ml-2 h-5 w-5"
@@ -107,17 +105,18 @@ const Navbar = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
-                    {datacategories.map((categorie, index) => (
+                    {datacategories.map((categorie) => (
                       <Menu.Item>
                         {({ active }) => (
                           <Link
-                            key={index}
                             to={`/?categorie=${categorie.slug}`}
                             className={classNames(
-                              active ? " text-gray-900" : "text-gray-50",
-                              "block px-3 py-2 "
+                              active
+                                ? "bg-gray-100 text-gray-900"
+                                : "text-gray-700",
+                              "block px-4 py-2 text-sm"
                             )}
                           >
                             {categorie.name}
@@ -130,53 +129,59 @@ const Navbar = () => {
               </Transition>
             </Menu>
 
-            <div className="flex list-none items-center  ">
+            <>
               {showModeratorBoard && (
-                <li className="nav-item">
-                  <NavLink to={"/mod"} className="nav-link ml-7 items-center">
-                    Moderator Board
-                  </NavLink>
-                </li>
+                <NavLink to={"/mod"} className="nav-link">
+                  Moderator Board
+                </NavLink>
               )}
 
               {showAdminBoard && (
-                <NavLink to={"/admin"} className="   text-gray-200">
+                <NavLink
+                  to={"/admin/products"}
+                  className="ml-7 list-none whitespace-nowrap rounded  border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
+                >
                   Admin
                 </NavLink>
               )}
 
               {currentUser ? (
-                <div className="flex list-none items-center whitespace-nowrap ">
+                <>
+                  <NavLink to={"/profile"} className=" ml-7 items-center">
+                    {currentUser.username}
+                  </NavLink>
                   <NavLink
                     to={"/"}
                     onClick={logout}
-                    className="  px-3 py-2 text-gray-200"
+                    className="ml-7 list-none whitespace-nowrap rounded  border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
                   >
                     Logout
                   </NavLink>
-                </div>
+                </>
               ) : (
-                <div className="flex list-none items-center whitespace-nowrap ">
-                  <NavLink to={"/login"} className="  px-3 py-2 text-gray-600">
+                <>
+                  <NavLink
+                    to={"/login"}
+                    className="ml-7 list-none whitespace-nowrap rounded  border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
+                  >
                     Login
                   </NavLink>
 
                   <NavLink
                     to={"/register"}
-                    className="  px-3 py-2 text-gray-600"
+                    className="ml-7 list-none whitespace-nowrap rounded  border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
                   >
                     Sign Up
                   </NavLink>
-                </div>
+                </>
               )}
-              <SearchInput />
 
               <NavLink to={"/product/cart"}>
-                <div className="nav-bag ">
+                <div className="nav-bag">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="30"
-                    height="30"
+                    width="35"
+                    height="35"
                     fill="currentColor"
                     className="bi bi-handbag-fill"
                     viewBox="0 0 16 16"
@@ -188,12 +193,11 @@ const Navbar = () => {
                   </span>
                 </div>
               </NavLink>
-
               <Dropdown />
-            </div>
+            </>
           </div>
-        </div>
-      </nav>
+        </main>
+      </div>
     </>
   );
 };

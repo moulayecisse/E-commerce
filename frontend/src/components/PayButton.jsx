@@ -6,7 +6,7 @@ const PayButton = ({ cartItems }) => {
 
   const handleCheckout = () => {
     axios
-      .post(`https://localhost:8000/checkout`, {
+      .post(`http://localhost:8000/checkout`, {
         cartItems,
       })
       .then((response) => {

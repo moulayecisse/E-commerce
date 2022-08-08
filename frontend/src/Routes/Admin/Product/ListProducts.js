@@ -41,7 +41,7 @@ const ListProducts = () => {
     <div className="container mx-auto">
       <button
         onClick={() => navigate(-1)}
-        className="z-90 fixed bottom-8 right-8 h-16 w-16 rounded-full border-0 bg-indigo-500 text-xl font-bold text-white drop-shadow-md"
+        className="z-90 fixed bottom-8 right-8 h-16 w-16 rounded-full border-0 bg-indigo-200 text-xl font-bold text-black drop-shadow-md "
       >
         Back
       </button>

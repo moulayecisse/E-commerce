@@ -12,21 +12,18 @@ class PaymentController extends AbstractController
     #[Route('/payment', name: 'app_payment')]
     public function index(): Response
     {
-        return $this->render(
-            'payment/index.html.twig', [
+        return $this->render('payment/index.html.twig', [
             'controller_name' => 'PaymentController',
-            ]
-        );
+        ]);
     }
 
 
     #[Route('/checkout', name: 'app_payment')]
-    public function checkout($stripeSK): \Symfony\Component\HttpFoundation\Response
+    public function checkout($stripeSK)
     {
         Stripe::setApiKey($stripeSK);
 
-        $session = \Stripe\Checkout\Session::create(
-            [
+        $session = \Stripe\Checkout\Session::create([
             'line_items' => [[
                 'price_data' => [
                     'currency' => 'usd',
@@ -40,10 +37,9 @@ class PaymentController extends AbstractController
             'mode' => 'payment',
             'success_url' => 'https://localhost:3000/success',
             'cancel_url' => 'https://localhost:3000/cart',
-            ]
-        );
+        ]);
 
 
-        return $this->redirect($session->url, \Symfony\Component\HttpFoundation\Response::HTTP_SEE_OTHER);
+        return $this->redirect($session->url, 303);
     }
 }

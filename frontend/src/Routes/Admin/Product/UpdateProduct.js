@@ -2,7 +2,7 @@ import Label from "../../../components/label";
 import Input from "../../../components/input";
 import Button from "../../../components/button";
 import Errors from "../../../components/errors";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -11,11 +11,31 @@ const UpdateProduct = () => {
   const navigate = useNavigate();
   const [description, setDescription] = useState("");
   const [name, setName] = useState("");
-  const [price, setPrice] = useState(10);
-  const [slug, setSlug] = useState("slug");
-  const [stock, setStock] = useState(20);
-  const [categories, setCategories] = useState("/api/categories/1");
-  const [errors] = useState([]);
+  const [price, setPrice] = useState(0);
+  const [slug, setSlug] = useState("");
+  const [stock, setStock] = useState(0);
+  const [categories, setCategories] = useState("");
+  const [errors, setErrors] = useState([]);
+
+  const fillEmptyField = (data) => {
+    const product = data;
+    setName(product.name);
+    setDescription(product.description);
+    setPrice(product.price);
+    setSlug(product.slug);
+    setStock(product.stock);
+    setCategories(`api/categories/${product.categories.id}`);
+
+    console.log(
+      "mdrxd : ",
+      product.name,
+      product.description,
+      product.price,
+      product.slug,
+      product.stock,
+      `api/categories/${product.categories.id}`
+    );
+  };
 
   const [datacategories, setDataCategories] = useState([]);
   const [item, setData] = useState([]);
@@ -40,7 +60,8 @@ const UpdateProduct = () => {
   const getProduct = async () => {
     try {
       const res = await axios.get("https://localhost:8000/api/products/" + id);
-      console.log(res);
+      console.log("la dataaaa", res.data);
+      fillEmptyField(res.data);
       setData(res.data);
       // (res.data)
     } catch (error) {
@@ -95,7 +116,7 @@ const UpdateProduct = () => {
         <title>E-commerce ajouter article</title>
       </div>
 
-      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
+      <div className={"mx-auto w-1/2 rounded-lg bg-white p-5"}>
         <Errors className="mb-5" errors={errors} />
 
         <div>
@@ -156,10 +177,10 @@ const UpdateProduct = () => {
           <label htmlFor="countries">Categorie</label>
           <select
             onChange={(event) => setCategories(event.target.value)}
-            className="focus:ring- indigo-500 focus:border- indigo-500   dark:focus:ring- indigo-500 dark:focus:border- indigo-500 block w-full rounded border border-gray-300 bg-gray-600 p-2.5 text-gray-800 dark:border-gray-300 dark:bg-gray-600 dark:text-white dark:placeholder-gray-400"
+            className="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
           >
             {datacategories.map((option) => (
-              <option key={option.id} value={`api/categories/${option.id}`}>
+              <option value={`api/categories/${option.id}`} selected="iphone">
                 {option.name}
               </option>
             ))}

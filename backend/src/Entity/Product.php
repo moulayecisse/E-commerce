@@ -64,6 +64,9 @@ class Product
     #[ORM\Column(options: ['default', 0])]
     private ?int $click = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?float $weight = null;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -161,6 +164,18 @@ class Product
     public function setImage(?MediaObject $image): self
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    public function getWeight(): ?float
+    {
+        return $this->weight;
+    }
+
+    public function setWeight(?float $weight): self
+    {
+        $this->weight = $weight;
 
         return $this;
     }
