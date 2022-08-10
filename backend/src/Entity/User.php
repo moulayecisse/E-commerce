@@ -8,6 +8,9 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
+use ApiPlatform\Core\Annotation\ApiFilter;
+
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\Common\Collections\Collection;
 
@@ -19,6 +22,7 @@ use Doctrine\Common\Collections\Collection;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource]
+#[ApiFilter(OrderFilter::class, properties: [])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
 
@@ -154,7 +158,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
-  
+
     public function getAddress(): ?string
     {
         return $this->address;

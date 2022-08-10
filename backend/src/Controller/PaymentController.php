@@ -4,42 +4,56 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Stripe\Stripe;
+use \Stripe\Checkout\Session;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class PaymentController extends AbstractController
 {
-    #[Route('/payment', name: 'app_payment')]
-    public function index(): Response
+    public function getProducts(Request $request): array
     {
-        return $this->render('payment/index.html.twig', [
-            'controller_name' => 'PaymentController',
-        ]);
+        if ($request->isXmlHttpRequest()) {
+            $lol = $request->getContent();
+            $cerealekillers = serialize($lol);
+            $products = (json_decode(unserialize($cerealekillers), true));
+            return $products;
+        }
     }
-
-
-    #[Route('/checkout', name: 'app_payment')]
-    public function checkout($stripeSK)
+    #[Route('/api/stripe/create-checkout-session', name: 'app_payment')]
+    public function checkout($stripeSK, Request $request)
     {
-        Stripe::setApiKey($stripeSK);
-
-        $session = \Stripe\Checkout\Session::create([
-            'line_items' => [[
-                'price_data' => [
-                    'currency' => 'usd',
-                    'product_data' => [
-                        'name' => 'T-shirt',
-                    ],
-                    'unit_amount' => 2000,
-                ],
-                'quantity' => 1,
-            ]],
+        $data = json_decode($request->getContent(), true);
+        $cartItems = $data['cartItems'];
+        $fp = fopen('data.txt', 'w');
+        fwrite($fp, json_encode($data['cartItems']));
+        if (!$cartItems) {
+            return new JsonResponse(['error' => 'error']);
+        }
+        Stripe::setApiKey($stripeSK, $request);
+        $session = Session::create([
+            'line_items' => [
+                array_map(fn (array $cartItem) => [
+                    'quantity' => 1,
+                    'price_data' => [
+                        'currency' => 'EUR',
+                        'product_data' => [
+                            'name' => $cartItem['name']
+                        ],
+                        'unit_amount' => $cartItem['price']
+                    ]
+                ], $cartItems)
+            ],
             'mode' => 'payment',
-            'success_url' => 'https://localhost:3000/success',
-            'cancel_url' => 'https://localhost:3000/cart',
+            'success_url' => 'http://localhost:8000/',
+            'cancel_url' => 'http://localhost:8000/',
+            'billing_address_collection' => 'required',
+            'shipping_address_collection' => [
+                'allowed_countries' => ['FR']
+            ],
         ]);
-
-
-        return $this->redirect($session->url, 303);
+        return new JsonResponse(['url' => $session->url]);
     }
 }

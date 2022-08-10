@@ -3,6 +3,9 @@ import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { XIcon } from "@heroicons/react/outline";
 import { useDispatch, useSelector } from "react-redux";
+import PayButton from "../components/PayButton";
+import { useNavigate } from "react-router-dom";
+
 import {
   addToCart,
   clearCart,
@@ -10,8 +13,13 @@ import {
   getTotals,
   removeFromCart,
 } from "../Routes/User/slices/cartSlice";
+import AuthService from "../services/auth.service";
+
+const user = AuthService.getCurrentUser();
 
 export default function Example() {
+  const navigate = useNavigate();
+
   const [open, setOpen] = useState(true);
   const cart = useSelector((state) => state.cart);
   const dispatch = useDispatch();
@@ -154,17 +162,17 @@ export default function Example() {
                         <p>Subtotal</p>
                         <p>${cart.cartTotalAmount}</p>
                       </div>
-                      <p className="mt-0.5  text-gray-500">
-                        Shipping and taxes calculated at checkout.
-                      </p>
-                      <div className="mt-6">
-                        <a
-                          href="#"
-                          className="flex items-center justify-center rounded border border-transparent bg-indigo-600 px-6 py-3 text-base font-normal text-white shadow-sm hover:bg-indigo-700"
+                      <p>Taxes and shipping calculated at checkout</p>
+                      {user ? (
+                        <PayButton cartItems={cart.cartItems} />
+                      ) : (
+                        <button
+                          className="cart-login"
+                          onClick={() => navigate("/login")}
                         >
-                          Checkout
-                        </a>
-                      </div>
+                          Login to Check out
+                        </button>
+                      )}
                       <div className="mt-6 flex justify-center text-center  text-gray-500">
                         <p>
                           or{" "}
