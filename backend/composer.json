@@ -38,7 +38,8 @@
         "symfony/twig-bundle": "6.0.*",
         "symfony/validator": "6.0.*",
         "symfony/yaml": "6.0.*",
-        "vich/uploader-bundle": "^1.20"
+        "vich/uploader-bundle": "^1.20",
+      "ext-zend-opcache": "*"
     },
     "config": {
         "allow-plugins": {
