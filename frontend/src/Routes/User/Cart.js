@@ -1,3 +1,4 @@
+import "../../components/styles/cart.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -87,7 +88,9 @@ const Cart = () => {
                       </button>
                     </div>
                   </div>
-                  <div className="cart-product-price">${cartItem.price}</div>
+                  <div className="cart-product-price">
+                    ${parseFloat(cartItem.price).toFixed(2)}
+                  </div>
                   <div className="cart-product-quantity">
                     <button onClick={() => handleDecreaseCart(cartItem)}>
                       -
@@ -96,7 +99,10 @@ const Cart = () => {
                     <button onClick={() => handleAddToCart(cartItem)}>+</button>
                   </div>
                   <div className="cart-product-total-price">
-                    ${cartItem.price * cartItem.cartQuantity}
+                    $
+                    {parseFloat(cartItem.price * cartItem.cartQuantity).toFixed(
+                      2
+                    )}
                   </div>
                 </div>
               ))}

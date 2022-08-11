@@ -37,6 +37,8 @@
         // Create an instance of the Stripe object with your publishable API key
 var stripe = Stripe("pk_test_51LTQfUF3KkRWIEfi4gqpRzC4696146OLqJavH4rGv2eqdJboUArUcjqWpfUYd7dKx6Qt5wVum6FEMqYF79KX0elJ00LCynCeea");
 
+
+
         var checkoutButton = document.getElementById("checkout-button");
         checkoutButton.addEventListener("click", function () {
             fetch("{{ path('stripe_create_session') }}", {

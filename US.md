@@ -308,3 +308,33 @@ Difficulté : 2/5
 - [ ]
 
 ---
+
+## US_07
+
+1. Utilisateur : Je peux enregistrer mes coordonnées sur la plateforme et être dans la possibilité d’effectuer des achats uniquement à l’aide de mon CVV (série de 3 chiffres), afin de faciliter mes futurs achats.
+
+#hint( Avoir une option pour ne pas enregistrer le CVV (page de paiement ou profil). )
+
+Priorité : Essentiel
+Difficulté : 1/5
+
+2. Utilisateur : Je dois avoir la possibilité d’imprimer mes différentes factures afin de conserver une trace de mes achats.
+
+#hint( Sur l’interface pour suivre les commandes, avoir une option « imprimer » qui lance le téléchargement de la facture. )
+
+Priorité : Essentiel
+Difficulté : 3/5
+
+3. Administrateur : Je dois être dans la capacité de pouvoir télécharger un fichier EXCEL qui contiendra toutes les informations de mes clients (leurs commandes, les articles commandés…), toutes les informations du stock, afin d'obtenir des statistiques (clients réguliers, types de produits les plus achetés...).
+
+#hint( Sur la page principale du back admin, avoir une option « exporter » qui lance le téléchargement du fichier excel. )
+
+Priorité : Essentiel
+Difficulté : 2/5
+
+4. Utilisateur : Je dois avoir la possibilité de laisser un avis sur les articles du catalogue.
+
+#hint( Sur chaque page d'article un champs texte et un bouton de validation doivent être présents (uniquement pour les utilisateurs connectés) permettant d'enregistrer un avis. )
+
+Priorité : Secondaire
+Difficulté : 1/5

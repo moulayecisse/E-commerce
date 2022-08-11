@@ -1,3 +1,5 @@
+import "../components/styles/cart.css";
+
 import { useEffect } from "react";
 import { Fragment, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
@@ -89,70 +91,65 @@ export default function Example() {
                       </div>
 
                       <div className="mt-8">
-                        <div className="flow-root">
-                          <ul className="-my-6 divide-y divide-gray-200">
-                            {cart.cartItems.map((cartItem) => (
-                              <li key={cartItem.id} className="flex py-6">
-                                <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded border border-gray-200">
-                                  {cartItem.image && (
-                                    <img
-                                      src={`https://localhost:8000${cartItem.image.contentUrl}`}
-                                      alt={cartItem.name}
-                                      className="h-full w-full object-cover object-center"
-                                    />
-                                  )}
-                                </div>
+                        <div className="cart-items">
+                          {cart.cartItems.map((cartItem) => (
+                            <div className="cart-item" key={cartItem.id}>
+                              <div className="cart-product">
+                                {cartItem.image && (
+                                  <img
+                                    src={`https://localhost:8000${cartItem.image.contentUrl}`}
+                                    alt={cartItem.name}
+                                    className="h-full w-full object-cover object-center"
+                                  />
+                                )}
+                              </div>
 
-                                <div className="ml-4 flex flex-1 flex-col">
-                                  <div>
-                                    <div className="flex justify-between text-base font-normal text-gray-900">
-                                      <h3>
-                                        <a href=""> {cartItem.name} </a>
-                                      </h3>
-                                      <p className="ml-4">{cartItem.price}</p>
-                                    </div>
-                                    <div className="cart-product-quantity">
-                                      <button
-                                        onClick={() =>
-                                          handleDecreaseCart(cartItem)
-                                        }
-                                      >
-                                        -
-                                      </button>
-                                      <div className="count">
-                                        {cartItem.cartQuantity}
-                                      </div>
-                                      <button
-                                        onClick={() =>
-                                          handleAddToCart(cartItem)
-                                        }
-                                      >
-                                        +
-                                      </button>
-                                    </div>
-                                    <p className="mt-1  text-gray-500">pp</p>
+                              <div className="ml-4 flex flex-1 flex-col">
+                                <div>
+                                  <div className="flex justify-between text-base font-normal text-gray-900">
+                                    <h3>
+                                      <a href=""> {cartItem.name} </a>
+                                    </h3>
+                                    <p className="ml-4">{cartItem.price}</p>
                                   </div>
-                                  <div className="flex flex-1 items-end justify-between ">
-                                    <p className="text-gray-500">
-                                      Qty {cartItem.quantity}
-                                    </p>
-
-                                    <div className="flex">
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          handleRemoveFromCart(cartItem)
-                                        }
-                                        className="font-normal text-indigo-600 hover:text-indigo-500"
-                                      >
-                                        Remove
-                                      </button>
+                                  <div className="cart-product-quantity">
+                                    <button
+                                      onClick={() =>
+                                        handleDecreaseCart(cartItem)
+                                      }
+                                    >
+                                      -
+                                    </button>
+                                    <div className="count">
+                                      {cartItem.cartQuantity}
                                     </div>
+                                    <button
+                                      onClick={() => handleAddToCart(cartItem)}
+                                    >
+                                      +
+                                    </button>
                                   </div>
                                 </div>
-                              </li>
-                            ))}
-                          </ul>
+                                <div className="flex flex-1 items-end justify-between ">
+                                  <p className="text-gray-500">
+                                    Qty {cartItem.quantity}
+                                  </p>
+
+                                  {/* <div className="cart-product-quantity">
+                                    <button
+                                      type="button"
+                                      onClick={() =>
+                                        handleRemoveFromCart(cartItem)
+                                      }
+                                      className="font-normal text-indigo-600 hover:text-indigo-500"
+                                    >
+                                      Remove
+                                    </button>
+                                  </div> */}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     </div>

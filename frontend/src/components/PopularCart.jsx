@@ -7,12 +7,12 @@ import { Swiper, SwiperSlide } from "swiper/react";
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/effect-coverflow";
-import "swiper/css/pagination";
+import "swiper/css/navigation";
 
 import "./styles/slider.css";
 
 // import required modules
-import { EffectCoverflow, Pagination, Autoplay } from "swiper";
+import { EffectCoverflow, Pagination, Navigation, Autoplay } from "swiper";
 const PopularCart = () => {
   const [data, setData] = useState([]);
 
@@ -36,41 +36,42 @@ const PopularCart = () => {
     }
   };
   return (
-    <div className="products">
-      <Swiper
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={"auto"}
-        modules={[EffectCoverflow, Pagination]}
-        className="mySwiper"
-      >
-        {data &&
-          data?.map((product, index) => (
-            <SwiperSlide>
-              <div
-                key={index}
-                className="max-w-sm overflow-hidden rounded shadow-lg"
-              >
-                {product.image && (
-                  <img
-                    src={`https://localhost:8000${product.image.contentUrl}`}
-                    alt={product.name}
-                  />
-                )}
-                <div className="details">
-                  <span>{product.desc}</span>
-                  <span className="price">${product.price}</span>
-                </div>
-                <div className="mb-2 text-xl font-bold text-gray-900">
-                  {product.name}
-                </div>
-                <NavLink className="button" to={`/product/${product.id}`}>
-                  Voir plus
-                </NavLink>
-              </div>
-            </SwiperSlide>
-          ))}
-      </Swiper>
+    <div className="container">
+      <div className="out_team swiper-container">
+        <div className="swiper-wrapper">
+          <Swiper
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={3}
+            spaceBetween={30}
+            loop={true}
+            autoplay={{
+              delay: 2000,
+              disableOnInteraction: false,
+            }}
+            navigation={true}
+            modules={[EffectCoverflow, Pagination, Navigation, Autoplay]}
+            className="mySwiper"
+          >
+            {data &&
+              data?.map((product, index) => (
+                <SwiperSlide>
+                  <div key={index} className="our_team__member swiper-slide">
+                    <div className="otm_img">
+                      {product.image && (
+                        <img
+                          src={`https://localhost:8000${product.image.contentUrl}`}
+                          alt={product.name}
+                        />
+                      )}
+                    </div>
+                    <h3>{product.name}</h3>
+                  </div>
+                </SwiperSlide>
+              ))}
+          </Swiper>
+        </div>
+      </div>
     </div>
   );
 };

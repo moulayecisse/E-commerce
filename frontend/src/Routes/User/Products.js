@@ -66,55 +66,60 @@ const Products = () => {
   };
 
   return (
-    <div className="container mx-auto">
-      <div className=" mx-auto flex justify-center pt-10 ">
+    <div className="container">
+      <div className=" mx-auto flex w-screen justify-center pt-10 ">
         <SearchInput />
       </div>
+
       <div className="container">
         <h1 className="text-center">Les articles les plus consultés</h1>
         <PopularCart />
       </div>
-      <div className="bg-white">
-        <div className="home-container">
+
+      <div className="container">
+        <div className="items_wrapper">
           {status === "success" ? (
             <>
-              <h3>New Arrivals </h3>
+              <h2 class="title">Dernier produits</h2>
               <div className="products">
                 {currentItems &&
                   currentItems?.map((product, index) => (
-                    <div key={index} className="product">
-                      <h3 className="md:whitespace-line   whitespace-normal">
-                        {product.name}
-                      </h3>
-                      {product.image && (
-                        <img
-                          className="m-0 p-0"
-                          src={`https://localhost:8000${product.image.contentUrl}`}
-                          alt={product.name}
-                        />
-                      )}
-                      <div className="details">
-                        <span>{product.desc}</span>
-                        <span className="price">${product.price}</span>
+                    <div key={index} className="item">
+                      <div className="item_header">
+                        <a href="">
+                          {product.image && (
+                            <img
+                              src={`https://localhost:8000${product.image.contentUrl}`}
+                              alt={product.name}
+                            />
+                          )}
+                        </a>
                       </div>
-                      <button
-                        className="button mb-12"
-                        onClick={() => handleAddToCart(product)}
-                      >
-                        Add To Cart
-                      </button>
-                      <NavLink className="button" to={`/product/${product.id}`}>
-                        Voir plus
-                      </NavLink>
+
+                      <div className="item_footer">
+                        <h3>
+                          <NavLink className="" to={`/product/${product.id}`}>
+                            {product.name}
+                          </NavLink>
+                        </h3>
+
+                        <span className="price">{product.price}€</span>
+                        <button
+                          className="add"
+                          onClick={() => handleAddToCart(product)}
+                        >
+                          Add To Cart
+                        </button>
+                      </div>
                     </div>
                   ))}
               </div>
-              <div className="flex items-center justify-between border-t border-gray-300 bg-white px-4 py-3 sm:px-6">
+              <div className="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6">
                 <div>
-                  <p className="  text-gray-600">
-                    Showing <span className="font-normal">1</span> to{" "}
-                    <span className="font-normal">10</span> of{" "}
-                    <span className="font-normal">97</span> results
+                  <p className="text-sm text-gray-700">
+                    Showing <span className="font-medium">1</span> to{" "}
+                    <span className="font-medium">10</span> of{" "}
+                    <span className="font-medium">97</span> results
                   </p>
                 </div>
                 <ReactPaginate
@@ -125,19 +130,19 @@ const Products = () => {
                   previousLabel="<"
                   renderOnZeroPageCount={null}
                   containerClassName={
-                    "relative z-0 inline-flex rounded shadow-md -space-x-px"
+                    "relative z-0 inline-flex rounded-md shadow-sm -space-x-px"
                   }
                   pageLinkClassName={
-                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-600 relative inline-flex items-center px-4 py-2 border   font-normal"
+                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
                   }
                   previousLinkClassName={
-                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-600 relative inline-flex items-center px-4 py-2 border   font-normal"
+                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
                   }
                   nextLinkClassName={
-                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-600 relative inline-flex items-center px-4 py-2 border   font-normal"
+                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
                   }
                   breakClassName={
-                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-600 relative inline-flex items-center px-4 py-2 border   font-normal"
+                    "bg-white border-gray-300 text-gray-500 hover:bg-gray-50 relative inline-flex items-center px-4 py-2 border text-sm font-medium"
                   }
                   breakLinkClassName={"page-link"}
                   activeClassName={"active"}
@@ -151,6 +156,7 @@ const Products = () => {
           )}
         </div>
       </div>
+      <Outlet />
     </div>
   );
 };
