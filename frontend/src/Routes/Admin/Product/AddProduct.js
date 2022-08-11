@@ -2,11 +2,10 @@ import Label from "../../../components/label";
 import Input from "../../../components/input";
 import Button from "../../../components/button";
 import Errors from "../../../components/errors";
-import Select from "../../../components/select";
 import axios from "axios";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { ToastContainer, toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import { useForm } from "react-hook-form";

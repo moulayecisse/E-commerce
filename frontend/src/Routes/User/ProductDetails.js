@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import { StarIcon } from "@heroicons/react/solid";
-import { RadioGroup } from "@headlessui/react";
 import { addToCart } from "./slices/cartSlice";
 import { useDispatch } from "react-redux";
 import ReactStars from "react-stars";
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -22,18 +21,18 @@ const ProductDetails = () => {
     getProduct();
     // getNotation();
   }, []);
-//   const getNotation = async () => {
-//     try {
-//       const res = await axios.get("https://localhost:8000/api/notations/" + id);
+  //   const getNotation = async () => {
+  //     try {
+  //       const res = await axios.get("https://localhost:8000/api/notations/" + id);
 
-//       // setData(res.data);
-//       console.warn("notation : " + res);
+  //       // setData(res.data);
+  //       console.warn("notation : " + res);
 
-//       // (res.data)
-//     } catch (error) {
-//       console.log(error);
-//     }
-//   };
+  //       // (res.data)
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   };
   const getProduct = async () => {
     try {
       const res = await axios.get("https://localhost:8000/api/products/" + id);
@@ -113,7 +112,7 @@ const ProductDetails = () => {
     <div className="bg-white">
       <div className="pt-6">
         <nav aria-label="Breadcrumb">
-          <ol class="breadcrumb">
+          <ol className="breadcrumb">
             <li className="readcrumb-item">
               <div className="flex items-center">
                 {data.categories && (

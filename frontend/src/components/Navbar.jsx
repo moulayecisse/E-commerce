@@ -1,5 +1,5 @@
-import React, { Fragment, useState, useEffect } from "react";
-import { NavLink, Link } from "react-router-dom";
+import React, { Fragment, useEffect, useState } from "react";
+import { Link, NavLink } from "react-router-dom";
 import Dropdown from "./DropdownCart";
 import AuthService from "../services/auth.service";
 import EventBus from "../common/EventBus.js";
@@ -7,6 +7,7 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { useSelector } from "react-redux";
 import axios from "axios";
+
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -24,6 +25,7 @@ const Navbar = () => {
     try {
       return JSON.parse(atob(token.split(".")[1]));
     } catch (e) {
+      console.warn(e);
       return null;
     }
   };
@@ -80,8 +82,8 @@ const Navbar = () => {
               to="/"
             >
               <div>
-                <a href="#" class="text-2xl italic text-black">
-                  PC<span class="text-amber-500">Builder</span>
+                <a href="#" className="text-2xl italic text-black">
+                  PC<span className="text-amber-500">Builder</span>
                 </a>
               </div>
             </NavLink>

@@ -1,7 +1,7 @@
 import "../../components/styles/cart.css";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   addToCart,
   clearCart,
@@ -11,7 +11,6 @@ import {
 } from "./slices/cartSlice";
 import AuthService from "../../services/auth.service";
 import PayButton from "../../components/PayButton";
-import { Link } from "react-router-dom";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);

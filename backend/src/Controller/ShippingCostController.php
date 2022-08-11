@@ -2,18 +2,12 @@
 
 namespace App\Controller;
 
-use GuzzleHttp\Client;
 use App\Entity\ShippingFees;
-use App\Repository\CartRepository;
 use App\Repository\ProductRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
- 
 
 #[Route('/shipping', name: 'shipping')]
 class ShippingCostController extends AbstractController
@@ -27,10 +21,10 @@ class ShippingCostController extends AbstractController
         $this->requests = new Request();
         $this->index();
     }
-    #[Route(path: '/get', name: 'get_shipping_cost')]
 
+    #[Route(path: '/get', name: 'get_shipping_cost')]
     public function
-    index()
+    index(): Response
     {
         $response = new Response();
 
@@ -47,12 +41,13 @@ class ShippingCostController extends AbstractController
         if ($productWeight) {
             $response->setContent(json_encode([
                 'distance' => ($this->calculate($productWeight)),
-            ]));
+            ], JSON_THROW_ON_ERROR));
             $response->headers->set('Content-Type', 'application/json');
             return $response;
         }
         // return $this->json($data);
     }
+
     public function calculate($productWeight)
     {
         // $client = new Client();
@@ -61,21 +56,22 @@ class ShippingCostController extends AbstractController
         // dd($res->getBody());
         return $this->distance(48.856614, 2.3522219, 50.8503396, 4.3517103, 'K');
     }
-    function distance($lat1, $lon1, $lat2, $lon2, $unit)
+
+    public function distance($lat1, $lon1, $lat2, $lon2, $unit)
     {
         if (($lat1 == $lat2) && ($lon1 == $lon2)) {
             return 0;
         } else {
             $theta = $lon1 - $lon2;
-            $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) +  cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
+            $dist = sin(deg2rad($lat1)) * sin(deg2rad($lat2)) + cos(deg2rad($lat1)) * cos(deg2rad($lat2)) * cos(deg2rad($theta));
             $dist = acos($dist);
             $dist = rad2deg($dist);
             $miles = $dist * 60 * 1.1515;
             $unit = strtoupper($unit);
 
-            if ($unit == "K") {
+            if ($unit == 'K') {
                 return ($miles * 1.609344);
-            } else if ($unit == "N") {
+            } else if ($unit == 'N') {
                 return ($miles * 0.8684);
             } else {
                 return $miles;
@@ -86,6 +82,7 @@ class ShippingCostController extends AbstractController
         // var_dump($this->distance(32.9697, -96.80322, 29.46786, -98.53506, "K") . " Kilometers<br>");
         // var_dump($this->distance(32.9697, -96.80322, 29.46786, -98.53506, "N") . " Nautical Miles<br>");
     }
+
     public function getShippingCostForWeight()
     {
     }

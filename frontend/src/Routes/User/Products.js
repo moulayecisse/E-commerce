@@ -1,12 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { NavLink, useLocation, Outlet } from "react-router-dom";
+import { NavLink, Outlet, useLocation } from "react-router-dom";
 import SearchInput from "../../components/Search";
 import queryString from "query-string";
 import { useDispatch, useSelector } from "react-redux";
 
 import { addToCart } from "./slices/cartSlice";
-import { useGetAllProductsQuery } from "./slices/productsApi";
 import ReactPaginate from "react-paginate";
 import PopularCart from "../../components/PopularCart";
 
@@ -80,7 +79,7 @@ const Products = () => {
         <div className="items_wrapper">
           {status === "success" ? (
             <>
-              <h2 class="title">Dernier produits</h2>
+              <h2 className="title">Dernier produits</h2>
               <div className="products">
                 {currentItems &&
                   currentItems?.map((product, index) => (

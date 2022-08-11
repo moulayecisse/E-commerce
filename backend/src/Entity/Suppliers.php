@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -25,51 +24,61 @@ class Suppliers
     #[ORM\GeneratedValue(strategy: 'NONE')]
     #[ORM\OneToOne(targetEntity: 'Stock')]
     #[ORM\JoinColumn(name: 'id', referencedColumnName: 'id')]
-    private ?\App\Entity\Stock $id = null;
+    private ?Stock $id = null;
+
     public function getName(): ?string
     {
         return $this->name;
     }
+
     public function setName(?string $name): self
     {
         $this->name = $name;
 
         return $this;
     }
+
     public function getAdresse(): ?string
     {
         return $this->adresse;
     }
+
     public function setAdresse(?string $adresse): self
     {
         $this->adresse = $adresse;
 
         return $this;
     }
+
     public function getPhoneNumber(): ?string
     {
         return $this->phoneNumber;
     }
+
     public function setPhoneNumber(?string $phoneNumber): self
     {
         $this->phoneNumber = $phoneNumber;
 
         return $this;
     }
+
     public function getInvoices(): ?int
     {
         return $this->invoices;
     }
+
     public function setInvoices(?int $invoices): self
     {
         $this->invoices = $invoices;
 
         return $this;
     }
+
     public function getId(): ?Stock
     {
         return $this->id;
     }
+
     public function setId(?Stock $id): self
     {
         $this->id = $id;

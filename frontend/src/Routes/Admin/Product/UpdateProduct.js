@@ -2,7 +2,7 @@ import Label from "../../../components/label";
 import Input from "../../../components/input";
 import Button from "../../../components/button";
 import Errors from "../../../components/errors";
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate, useParams } from "react-router-dom";
 

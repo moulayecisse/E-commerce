@@ -2,23 +2,23 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use App\Repository\UserRepository;
+use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
-use ApiPlatform\Core\Annotation\ApiFilter;
-
-use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\Common\Collections\Collection;
 
 /**
  * User
  */
 #[ORM\UniqueConstraint(name: 'UNIQ_8D93D649E7927C74', columns: ['email'])]
-
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ApiResource]
@@ -49,7 +49,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $lastname = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
-
     private ?string $address = null;
 
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
@@ -71,19 +70,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?string $additionalContactInfo = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $modifiedDate = null;
+    private ?DateTimeInterface $modifiedDate = null;
 
     #[ORM\OneToMany(targetEntity: Cart::class, mappedBy: 'user')]
     private $carts;
+
+    public function __construct()
+    {
+        $this->carts = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
     public function getEmail(): ?string
     {
         return $this->email;
     }
+
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -110,7 +116,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // $this->plainPassword = null;
     }
 
-
     /**
      * @see UserInterface
      */
@@ -122,36 +127,43 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return array_unique($roles);
     }
+
     public function setRoles(string $roles): self
     {
         $this->roles = $roles;
 
         return $this;
     }
+
     public function getPassword(): ?string
     {
         return $this->password;
     }
+
     public function setPassword(string $password): self
     {
         $this->password = $password;
 
         return $this;
     }
+
     public function getFirstname(): ?string
     {
         return $this->firstname;
     }
+
     public function setFirstname(?string $firstname): self
     {
         $this->firstname = $firstname;
 
         return $this;
     }
+
     public function getLastname(): ?string
     {
         return $this->lastname;
     }
+
     public function setLastname(?string $lastname): self
     {
         $this->lastname = $lastname;
@@ -163,86 +175,103 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->address;
     }
+
     public function setAddress(?string $address): self
     {
         $this->address = $address;
 
         return $this;
     }
+
     public function getZipcode(): ?string
     {
         return $this->zipcode;
     }
+
     public function setZipcode(?string $zipcode): self
     {
         $this->zipcode = $zipcode;
 
         return $this;
     }
+
     public function getCity(): ?string
     {
         return $this->city;
     }
+
     public function setCity(?string $city): self
     {
         $this->city = $city;
 
         return $this;
     }
+
     public function getContactId(): ?int
     {
         return $this->contactId;
     }
+
     public function setContactId(?int $contactId): self
     {
         $this->contactId = $contactId;
 
         return $this;
     }
+
     public function getTitle(): ?string
     {
         return $this->title;
     }
+
     public function setTitle(?string $title): self
     {
         $this->title = $title;
 
         return $this;
     }
+
     public function getSuffix(): ?string
     {
         return $this->suffix;
     }
+
     public function setSuffix(?string $suffix): self
     {
         $this->suffix = $suffix;
 
         return $this;
     }
+
     public function getPasswordHash(): ?string
     {
         return $this->passwordHash;
     }
+
     public function setPasswordHash(?string $passwordHash): self
     {
         $this->passwordHash = $passwordHash;
 
         return $this;
     }
+
     public function getPasswordSalt(): ?string
     {
         return $this->passwordSalt;
     }
+
     public function setPasswordSalt(?string $passwordSalt): self
     {
         $this->passwordSalt = $passwordSalt;
 
         return $this;
     }
+
     public function getAdditionalContactInfo(): ?string
     {
         return $this->additionalContactInfo;
     }
+
     public function setAdditionalContactInfo(?string $additionalContactInfo): self
     {
         $this->additionalContactInfo = $additionalContactInfo;
@@ -250,17 +279,18 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function getModifiedDate(): ?\DateTimeInterface
+    public function getModifiedDate(): ?DateTimeInterface
     {
         return $this->modifiedDate;
     }
 
-    public function setModifiedDate(\DateTimeInterface $modifiedDate): self
+    public function setModifiedDate(DateTimeInterface $modifiedDate): self
     {
         $this->modifiedDate = $modifiedDate;
 
         return $this;
     }
+
     /**
      * @return Collection|Cart[]
      */
@@ -268,6 +298,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
         return $this->carts;
     }
+
     public function addCart(Cart $cart): self
     {
         if (!$this->carts->contains($cart)) {
@@ -277,6 +308,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
         return $this;
     }
+
     public function removeCart(Cart $cart): self
     {
         if ($this->carts->removeElement($cart)) {

@@ -2,7 +2,8 @@
 
 namespace App\Entity;
 
-use Doctrine\DBAL\Types\Types;
+use DateTime;
+use DateTimeInterface;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -20,7 +21,7 @@ class Stock
     #[ORM\Column(name: 'product_id', type: 'integer', nullable: true)]
     private ?int $productId = null;
     #[ORM\Column(name: 'last_order', type: 'datetime', nullable: true)]
-    private ?\DateTime $lastOrder = null;
+    private ?DateTime $lastOrder = null;
     #[ORM\Column(name: 'suppliers', type: 'integer', nullable: true)]
     private ?int $suppliers = null;
     #[ORM\Column(name: 'stock_count', type: 'integer', nullable: true, options: ['unsigned' => true])]
@@ -43,12 +44,12 @@ class Stock
         return $this;
     }
 
-    public function getLastOrder(): ?\DateTimeInterface
+    public function getLastOrder(): ?DateTimeInterface
     {
         return $this->lastOrder;
     }
 
-    public function setLastOrder(?\DateTimeInterface $lastOrder): self
+    public function setLastOrder(?DateTimeInterface $lastOrder): self
     {
         $this->lastOrder = $lastOrder;
 

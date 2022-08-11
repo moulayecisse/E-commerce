@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace App\Repository;
@@ -25,7 +26,6 @@ class CategoriesRepository extends ServiceEntityRepository
     public function add(Categories $entity, bool $flush = false): void
     {
         $this->getEntityManager()->persist($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }
@@ -34,12 +34,10 @@ class CategoriesRepository extends ServiceEntityRepository
     public function remove(Categories $entity, bool $flush = false): void
     {
         $this->getEntityManager()->remove($entity);
-
         if ($flush) {
             $this->getEntityManager()->flush();
         }
     }
-
     //    /**
     //     * @return Categories[] Returns an array of Categories objects
     //     */
@@ -54,7 +52,6 @@ class CategoriesRepository extends ServiceEntityRepository
     //            ->getResult()
     //        ;
     //    }
-
     //    public function findOneBySomeField($value): ?Categories
     //    {
     //        return $this->createQueryBuilder('c')

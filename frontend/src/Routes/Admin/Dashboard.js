@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { Outlet, NavLink } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import AuthService from "../../services/auth.service";
-import React, { useState } from "react";
+import React from "react";
+
 const Dashboard = () => {
   const user = AuthService.getCurrentUser();
 
@@ -11,6 +12,7 @@ const Dashboard = () => {
     try {
       return JSON.parse(atob(token.split(".")[1]));
     } catch (e) {
+      console.warn(e);
       return null;
     }
   };

@@ -34,7 +34,9 @@ export default function PaymentForm() {
       card: elements.getElement(CardElement),
     });
 
-    if (!error) {
+    if (error) {
+      console.log(error.message);
+    } else {
       try {
         const { id } = paymentMethod;
         const response = await axios.post("http://localhost:8000/orders", {
@@ -49,14 +51,19 @@ export default function PaymentForm() {
       } catch (error) {
         console.log("Error", error);
       }
-    } else {
-      console.log(error.message);
     }
   };
 
   return (
     <>
-      {!success ? (
+      {success ? (
+        <div>
+          <h2>
+            You just bought a sweet spatula congrats this is the best decision
+            of you're life
+          </h2>
+        </div>
+      ) : (
         <form onSubmit={handleSubmit}>
           <fieldset className="FormGroup">
             <div className="FormRow">
@@ -65,13 +72,6 @@ export default function PaymentForm() {
           </fieldset>
           <button>Pay</button>
         </form>
-      ) : (
-        <div>
-          <h2>
-            You just bought a sweet spatula congrats this is the best decision
-            of you're life
-          </h2>
-        </div>
       )}
     </>
   );

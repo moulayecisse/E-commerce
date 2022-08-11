@@ -2,13 +2,10 @@
 
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-
-
 use ApiPlatform\Core\Annotation\ApiResource;
 use App\Repository\OrdersDetailsRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
+
 /**
  * OrdersDetails
  */
@@ -29,10 +26,10 @@ class OrdersDetails
     private int $price;
     #[ORM\ManyToOne(targetEntity: 'Product')]
     #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
-    private \App\Entity\Product $product;
+    private Product $product;
     #[ORM\ManyToOne(targetEntity: 'Orders')]
     #[ORM\JoinColumn(name: 'orders_id', referencedColumnName: 'id')]
-    private \App\Entity\Orders $orders;
+    private Orders $orders;
 
     public function getId(): ?int
     {

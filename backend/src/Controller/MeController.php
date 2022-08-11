@@ -5,6 +5,7 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Security;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class MeController extends AbstractController
 {
@@ -13,7 +14,7 @@ class MeController extends AbstractController
         $this->security = $security;
     }
 
-    public function __invoke(): ?\Symfony\Component\Security\Core\User\UserInterface
+    public function __invoke(): ?UserInterface
     {
         $user = $this->security->getUser();
         // dd($user);

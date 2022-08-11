@@ -28,8 +28,6 @@ const CheckoutSuccess = () => {
   );
 };
 
-export default CheckoutSuccess;
-
 const Container = styled.div`
   min-height: 80vh;
   max-width: 800px;

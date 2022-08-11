@@ -1,6 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { NavLink } from "react-router-dom";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -12,7 +11,8 @@ import "swiper/css/navigation";
 import "./styles/slider.css";
 
 // import required modules
-import { EffectCoverflow, Pagination, Navigation, Autoplay } from "swiper";
+import { Autoplay, EffectCoverflow, Navigation, Pagination } from "swiper";
+
 const PopularCart = () => {
   const [data, setData] = useState([]);
 

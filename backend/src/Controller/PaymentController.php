@@ -2,26 +2,25 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Annotation\Route;
+use Stripe\Checkout\Session;
 use Stripe\Stripe;
-use \Stripe\Checkout\Session;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpKernel\Exception\HttpException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class PaymentController extends AbstractController
 {
     #[Route('/api/stripe/create-checkout-session', name: 'app_payment')]
-    public function checkout($stripeSK, Request $request)
+    public function checkout($stripeSK, Request $request): Response
     {
-        $data = json_decode($request->getContent(), true);
+        $data = json_decode($request->getContent(), true, 512, JSON_THROW_ON_ERROR);
         if (!$data) {
-            return new JsonResponse(['error' => 'not data'], 400);
+            return new JsonResponse(['error' => 'not data'], Response::HTTP_BAD_REQUEST);
         }
         $cartItems = $data['cartItems'];
-        Stripe::setApiKey("sk_test_51HkPZdCc8KoQEaMIodCH66kPI9mFdk8OgmP8hzJBHjqKnKthr828wbmUCXWWzeSX4kH9JerKiMHlkPmAM84XEBTw00iPzzRsK7", $request);
+        Stripe::setApiKey('sk_test_51HkPZdCc8KoQEaMIodCH66kPI9mFdk8OgmP8hzJBHjqKnKthr828wbmUCXWWzeSX4kH9JerKiMHlkPmAM84XEBTw00iPzzRsK7');
         $session = Session::create([
             'shipping_options' => [
                 [
@@ -68,13 +67,13 @@ class PaymentController extends AbstractController
                 ],
             ],
             'line_items' => [
-                array_map(fn (array $cartItem) => [
+                array_map(fn(array $cartItem) => [
                     'quantity' => $cartItem['cartQuantity'],
                     'price_data' => [
                         'currency' => 'EUR',
                         'product_data' => [
                             'name' => $cartItem['name'],
-                            'images' => ["https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png"],
+                            'images' => ['https://upload.wikimedia.org/wikipedia/commons/thumb/a/ac/No_image_available.svg/1024px-No_image_available.svg.png'],
                         ],
                         'unit_amount' => $cartItem['price'] * 100,
                     ]

@@ -1,14 +1,12 @@
 import "./App.css";
 import "./components/sass/main.scss";
 
-import { Routes, Route } from "react-router-dom";
+import { Route, Routes } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 /*   Components */
 import Navbar from "./components/Navbar";
-import Dropdown from "./components/DropdownCart";
 import NotFound from "./components/NotFound";
-import AdminPanel from "./Routes/Admin/AdminPanel";
 import Admin from "./Routes/Admin/Dashboard";
 /*   Admin Crud Product */
 import ListProducts from "./Routes/Admin/Product/ListProducts";
@@ -32,6 +30,7 @@ import ProductDetails from "./Routes/User/ProductDetails";
 import SearchResult from "./Routes/User/SearchResult";
 import Cart from "./Routes/User/Cart";
 import UpdateUsers from "./Routes/Admin/Users/UpdateUsers";
+
 function App() {
   return (
     <>

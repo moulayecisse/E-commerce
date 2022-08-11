@@ -25,7 +25,7 @@ class Orders
     private string $reference;
     #[ORM\ManyToOne(targetEntity: 'User')]
     #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    private \App\Entity\User $user;
+    private User $user;
 
     public function getId(): ?int
     {
