@@ -5,6 +5,7 @@ import { StarIcon } from "@heroicons/react/solid";
 import { RadioGroup } from "@headlessui/react";
 import { addToCart } from "./slices/cartSlice";
 import { useDispatch } from "react-redux";
+import ReactStars from "react-stars";
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
@@ -19,8 +20,20 @@ const ProductDetails = () => {
 
   useEffect(() => {
     getProduct();
+    // getNotation();
   }, []);
+//   const getNotation = async () => {
+//     try {
+//       const res = await axios.get("https://localhost:8000/api/notations/" + id);
 
+//       // setData(res.data);
+//       console.warn("notation : " + res);
+
+//       // (res.data)
+//     } catch (error) {
+//       console.log(error);
+//     }
+//   };
   const getProduct = async () => {
     try {
       const res = await axios.get("https://localhost:8000/api/products/" + id);
@@ -33,18 +46,66 @@ const ProductDetails = () => {
       });
 
       setData(res.data);
-
+      console.warn(res.data);
+      if (res.data.click !== undefined && res.data.click !== null) {
+        clickItem();
+      }
       // (res.data)
     } catch (error) {
       console.log(error);
     }
   };
+  const clickItem = () => {
+    try {
+      const resp = axios({
+        method: "patch",
+        url: "https://localhost:8000/api/products/" + id,
+        headers: {
+          accept: "application/ld+json",
+          "Content-Type": "application/merge-patch+json",
+        },
+        data: JSON.stringify({
+          click: data.click + 1,
+        }),
+      })
+        .then(function (response) {
+          console.log(JSON.stringify(response.data));
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
+      console.log(resp.data);
+    } catch (error) {
+      if (error.response) {
+        console.log(error);
+      }
+    }
+  };
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
     // navigate("product/cart");
   };
+  const ratingChanged = (newRating) => {
+    console.warn(newRating);
 
+    fetch("https://localhost:8000/api/notations", {
+      method: "POST",
+      headers: {
+        accept: "application/ld+json",
+        "Content-Type": "application/ld+json",
+      },
+      body: JSON.stringify({
+        notationDate: new Date().toISOString().slice(0, 19).replace("T", " "),
+
+        rankingStars: newRating,
+        product: "/api/products/" + id,
+      }),
+    })
+      .then((response) => response.json())
+      .then((response) => console.warn(response))
+      .catch((err) => console.error(err));
+  };
   // const [selectedColor, setSelectedColor] = useState(product.colors[0])
   // const [selectedSize, setSelectedSize] = useState(product.sizes[2])
   const reviews = { href: "#", average: 4, totalCount: 117 };
@@ -93,18 +154,13 @@ const ProductDetails = () => {
               <h3 className="sr-only">Reviews</h3>
               <div className="flex items-center">
                 <div className="flex items-center">
-                  {[0, 1, 2, 3, 4].map((rating) => (
-                    <StarIcon
-                      key={rating}
-                      className={classNames(
-                        reviews.average > rating
-                          ? "text-gray-900"
-                          : "text-gray-200",
-                        "h-5 w-5 flex-shrink-0"
-                      )}
-                      aria-hidden="true"
-                    />
-                  ))}
+                  <ReactStars
+                    count={5}
+                    onChange={ratingChanged}
+                    size={24}
+                    half={false}
+                    color2={"#ffd700"}
+                  />
                 </div>
                 <p className="sr-only">{reviews.average} out of 5 stars</p>
                 <a

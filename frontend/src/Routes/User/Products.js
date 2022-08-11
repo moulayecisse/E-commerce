@@ -86,14 +86,14 @@ const Products = () => {
                   currentItems?.map((product, index) => (
                     <div key={index} className="item">
                       <div className="item_header">
-                        <a href="">
+                        <NavLink className="" to={`/product/${product.id}`}>
                           {product.image && (
                             <img
                               src={`https://localhost:8000${product.image.contentUrl}`}
                               alt={product.name}
                             />
-                          )}
-                        </a>
+                          )}{" "}
+                        </NavLink>
                       </div>
 
                       <div className="item_footer">
@@ -110,6 +110,9 @@ const Products = () => {
                         >
                           Add To Cart
                         </button>
+                        {/* <NavLink className="add" to={`/product/${product.id}`}>
+                          Voir plus
+                        </NavLink> */}
                       </div>
                     </div>
                   ))}
