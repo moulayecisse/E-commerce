@@ -137,7 +137,7 @@ Priorité : **Essentiel**
 
 Difficulté : 4/5
 
-- [ ]
+- [x]
 
 ---
 
@@ -148,7 +148,7 @@ Priorité : Facultatif
 
 Difficulté : 1/5
 
-- [ ]
+- [x]
 
 ---
 

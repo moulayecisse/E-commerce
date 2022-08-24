@@ -2,38 +2,72 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\OrdersDetailsRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * OrdersDetails
- */
-#[ORM\Table(name: 'orders_details')]
-#[ORM\UniqueConstraint(name: 'UNIQ_835379F1CFFE9AD6', columns: ['orders_id'])]
-#[ORM\Index(name: 'IDX_835379F14584665A', columns: ['product_id'])]
 #[ORM\Entity(repositoryClass: OrdersDetailsRepository::class)]
-#[ApiResource]
+#[ApiResource(
+    normalizationContext: ['groups' => ['read:collection']],
+)]
+#[ApiFilter(SearchFilter::class, properties: ['orders.user' => 'exact',])]
 class OrdersDetails
 {
-    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
-    #[ORM\Column(name: 'quantity', type: 'integer', nullable: false)]
-    private int $quantity;
-    #[ORM\Column(name: 'price', type: 'integer', nullable: false)]
-    private int $price;
-    #[ORM\ManyToOne(targetEntity: 'Product')]
-    #[ORM\JoinColumn(name: 'product_id', referencedColumnName: 'id')]
-    private Product $product;
-    #[ORM\ManyToOne(targetEntity: 'Orders')]
-    #[ORM\JoinColumn(name: 'orders_id', referencedColumnName: 'id')]
-    private Orders $orders;
+    #[ORM\GeneratedValue]
+    #[ORM\Column(type: 'integer')]
+    private $id;
+
+    #[ORM\ManyToOne(targetEntity: Product::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Groups(['read:collection'])]
+    private $product;
+
+    #[Groups(['read:collection'])]
+    #[ORM\Column(type: 'integer')]
+    private $quantity;
+
+    #[Groups(['read:collection'])]
+    #[ORM\Column(type: 'integer')]
+    private $price;
+
+    #[Groups(['read:collection'])]
+    #[ORM\ManyToOne(inversedBy: 'ordersDetails')]
+    private ?Orders $orders = null;
+
+    public function __construct()
+    {
+        $this->products = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    /**
+     * @return Collection<int, Product>
+     */
+    public function getProducts(): Collection
+    {
+        return $this->products;
+    }
+
+    public function getProduct(): ?Product
+    {
+        return $this->product;
+    }
+
+    public function setProduct(?Product $product): self
+    {
+        $this->product = $product;
+
+        return $this;
     }
 
     public function getQuantity(): ?int
@@ -60,18 +94,6 @@ class OrdersDetails
         return $this;
     }
 
-    public function getProduct(): ?Product
-    {
-        return $this->product;
-    }
-
-    public function setProduct(?Product $product): self
-    {
-        $this->product = $product;
-
-        return $this;
-    }
-
     public function getOrders(): ?Orders
     {
         return $this->orders;
@@ -83,4 +105,5 @@ class OrdersDetails
 
         return $this;
     }
+
 }

@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { NavLink, Outlet, useLocation } from "react-router-dom";
+import { NavLink, Outlet } from "react-router-dom";
 import SearchInput from "../../components/Search";
-import queryString from "query-string";
 import { useDispatch, useSelector } from "react-redux";
 
 import { addToCart } from "./slices/cartSlice";
 import ReactPaginate from "react-paginate";
 import PopularCart from "../../components/PopularCart";
 
-const Products = () => {
+const Products = ({ category }) => {
   const [itemOffset, setItemOffset] = useState(0);
   const [pageCount, setPageCount] = useState(0);
   const [currentItems, setCurrentItems] = useState([]);
@@ -17,39 +16,43 @@ const Products = () => {
   const itemsPerPage = 8;
   const dispatch = useDispatch();
   const { items: products, status } = useSelector((state) => state.products);
-  // const { data, error, isLoading } = useGetAllProductsQuery();
-  // console.log("Api", data);
 
   const handleAddToCart = (product) => {
     dispatch(addToCart(product));
   };
 
-  const { search } = useLocation();
-  const parsed = queryString.parse(search);
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await axios.get("https://127.0.0.1:8000/api/products", {
+        params: {
+          "categories.slug": category,
+          "order[id]": "DESC",
+        },
+      });
+       setData(data.data["hydra:member"]);
+    };
 
-  const categorie = parsed.categorie;
+    fetchData();
+  }, [category]);
 
   const getData = async () => {
     try {
       const res = await axios.get("https://127.0.0.1:8000/api/products", {
         params: {
-          "categories.slug": categorie,
+          "categories.slug": category,
           "order[id]": "DESC",
         },
       });
-
-      console.log(res.data["hydra:member"]);
       setData(res.data["hydra:member"]);
       // (res.data)
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
   useEffect(() => {
     const endOffset = itemOffset + itemsPerPage;
     setCurrentItems(data.slice(itemOffset, endOffset));
     setPageCount(Math.ceil(data.length / itemsPerPage));
-    // console.log(`Loading items from ${itemOffset} to ${endOffset}`);
   }, [data]);
 
   useEffect(() => {
@@ -58,9 +61,6 @@ const Products = () => {
 
   const handlePageClick = (event) => {
     const newOffset = (event.selected * itemsPerPage) % data.length;
-    console.log(
-      `User requested page number ${event.selected}, which is offset ${newOffset}`
-    );
     setItemOffset(newOffset);
   };
 
@@ -85,13 +85,13 @@ const Products = () => {
                   currentItems?.map((product, index) => (
                     <div key={index} className="item">
                       <div className="item_header">
-                        <NavLink className="" to={`/product/${product.id}`}>
+                        <NavLink to={`/product/${product.id}`}>
                           {product.image && (
                             <img
                               src={`https://localhost:8000${product.image.contentUrl}`}
                               alt={product.name}
                             />
-                          )}{" "}
+                          )}
                         </NavLink>
                       </div>
 
@@ -109,9 +109,6 @@ const Products = () => {
                         >
                           Add To Cart
                         </button>
-                        {/* <NavLink className="add" to={`/product/${product.id}`}>
-                          Voir plus
-                        </NavLink> */}
                       </div>
                     </div>
                   ))}
@@ -152,7 +149,9 @@ const Products = () => {
               </div>
             </>
           ) : status === "pending" ? (
-            <p>Loading...</p>
+            <div className="spinner-container">
+              <div className="loading-spinner"></div>
+            </div>
           ) : (
             <p>Unexpected error occured...</p>
           )}

@@ -1,10 +1,8 @@
 <?php
-declare(strict_types=1);
 
 namespace App\EventSubscriber;
 
 use DateTime;
-use JetBrains\PhpStorm\ArrayShape;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\AuthenticationSuccessEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Event\JWTAuthenticatedEvent;
 use Lexik\Bundle\JWTAuthenticationBundle\Events;
@@ -17,7 +15,7 @@ use Symfony\Component\HttpKernel\KernelEvents;
 
 class JWTSubscriber implements EventSubscriberInterface
 {
-    public const REFRESH_TIME = 1800;
+    public const REFRESH_TIME = 180000;
     private $payload;
     private $user;
 
@@ -26,7 +24,7 @@ class JWTSubscriber implements EventSubscriberInterface
         $this->jwtManager = $jwtManager;
     }
 
-    #[ArrayShape([Events::AUTHENTICATION_SUCCESS => "string", Events::JWT_AUTHENTICATED => "string", KernelEvents::RESPONSE => "string"])] public static function getSubscribedEvents(): array
+    public static function getSubscribedEvents()
     {
         return [
             Events::AUTHENTICATION_SUCCESS => 'onAuthenticationSuccess',
@@ -35,7 +33,7 @@ class JWTSubscriber implements EventSubscriberInterface
         ];
     }
 
-    public function onAuthenticatedResponse(ResponseEvent $event): void
+    public function onAuthenticatedResponse(ResponseEvent $event)
     {
         if ($this->payload && $this->user) {
             $expireTime = $this->payload['exp'] - time();
@@ -49,7 +47,7 @@ class JWTSubscriber implements EventSubscriberInterface
         }
     }
 
-    protected function createCookie(Response $response, $jwt): void
+    protected function createCookie(Response $response, $jwt)
     {
         $response->headers->setCookie(
             new Cookie(
@@ -66,13 +64,13 @@ class JWTSubscriber implements EventSubscriberInterface
         );
     }
 
-    public function onAuthenticatedAccess(JWTAuthenticatedEvent $event): void
+    public function onAuthenticatedAccess(JWTAuthenticatedEvent $event)
     {
         $this->payload = $event->getPayload();
         $this->user = $event->getToken()->getUser();
     }
 
-    public function onAuthenticationSuccess(AuthenticationSuccessEvent $event): void
+    public function onAuthenticationSuccess(AuthenticationSuccessEvent $event)
     {
         $eventData = $event->getData();
         if (isset($eventData['token'])) {

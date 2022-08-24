@@ -65,57 +65,59 @@ const Search = () => {
 
         {state.searching && (
           <ul className="absolute top-[50px] left-0 right-0 z-10 max-h-[200px] list-none overflow-y-scroll bg-white shadow-md">
-            {state.loading ? (
+            {!state.loading ? (
+              state.datas.length > 0 ? (
+                <>
+                  {state.datas.map((item, index) => {
+                    return (
+                      <>
+                        <li
+                          key={index}
+                          className="cursor-pointer py-2 px-4 transition-colors hover:bg-gray-500 hover:text-white"
+                        >
+                          <img
+                            src={`https://localhost:8000${item.image.contentUrl}`}
+                            alt={item.name}
+                            style={{ width: "3rem" }}
+                          />
+                          <NavLink
+                            to={`/product/${item.id}`}
+                            className="w-1/2 underline"
+                          >
+                            <Highlighter
+                              highlightClassName="highlistClass"
+                              searchWords={maRecherche.split(" ")}
+                              autoEscape={true}
+                              textToHighlight={item.name}
+                            />
+                          </NavLink>
+                          <span> {item.price} €</span>
+                        </li>
+                      </>
+                    );
+                  })}
+                  <button
+                    className="text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
+                    style={{ textAlign: "right", cursor: "pointer" }}
+                  >
+                    <NavLink
+                      className=""
+                      to={`/product/search?name=${encodeURIComponent(
+                        maRecherche
+                      )}`}
+                    >
+                      Voir plus...
+                    </NavLink>
+                  </button>
+                </>
+              ) : (
+                <li className="bg-red-100 py-2 px-4 transition-colors">
+                  Aucun résultats
+                </li>
+              )
+            ) : (
               <li className="bg-green-100 py-2 px-4 transition-colors">
                 Chargement en cours
-              </li>
-            ) : state.datas.length > 0 ? (
-              <>
-                {state.datas.map((item, index) => {
-                  return (
-                    <>
-                      <li
-                        key={index}
-                        className="cursor-pointer py-2 px-4 transition-colors hover:bg-gray-500 hover:text-white"
-                      >
-                        <img
-                          src={`https://localhost:8000${item.image.contentUrl}`}
-                          alt={item.name}
-                          style={{ width: "3rem" }}
-                        />
-                        <NavLink
-                          to={`/product/${item.id}`}
-                          className="w-1/2 underline"
-                        >
-                          <Highlighter
-                            highlightClassName="highlistClass"
-                            searchWords={maRecherche.split(" ")}
-                            autoEscape={true}
-                            textToHighlight={item.name}
-                          />
-                        </NavLink>
-                        <span> {item.price} €</span>
-                      </li>
-                    </>
-                  );
-                })}
-                <button
-                  className="text-blue-600 underline visited:text-purple-600 hover:text-blue-800"
-                  style={{ textAlign: "right", cursor: "pointer" }}
-                >
-                  <NavLink
-                    className=""
-                    to={`/product/search?name=${encodeURIComponent(
-                      maRecherche
-                    )}`}
-                  >
-                    Voir plus...
-                  </NavLink>
-                </button>
-              </>
-            ) : (
-              <li className="bg-red-100 py-2 px-4 transition-colors">
-                Aucun résultats
               </li>
             )}
           </ul>

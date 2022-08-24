@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace App\OpenApi;
 
@@ -20,70 +19,63 @@ class OpenApiFactory implements OpenApiFactoryInterface
     {
         $openApi = $this->decorated->__invoke($context);
         foreach ($openApi->getPaths()->getPaths() as $key => $path) {
-            if ($path->getGet() && $path->getGet()->getSummary() === 'hidden') {
+            if ($path->getGet() && $path->getGet()->getSummary() == 'hidden') {
                 $openApi->getPaths()->addPath($key, $path->withGet(null));
             }
         }
         $schemas = $openApi->getComponents()->getSecuritySchemes();
-        $schemas['cookieAuth'] = new ArrayObject(
-            [
-                'type' => 'apiKey',
-                'in' => 'cookie',
-                'name' => 'PHPSESSID'
-            ]
-        );
+        $schemas['bearerAuth'] = new ArrayObject([
+            'type' => 'http',
+            'scheme' => 'bearer',
+            'bearerFormat' => 'JWT'
+        ]);
+
         $schemas = $openApi->getComponents()->getSchemas();
-        $schemas['Credentials'] = new ArrayObject(
-            [
-                'type' => 'object',
-                'properties' => [
-                    'username' => [
-                        'type' => 'string',
-                        'example ' => 'john@doe.fr',
-                    ],
-                    'password' => [
-                        'type' => 'string',
-                        'example ' => '0000',
-                    ]
+        $schemas['Credentials'] = new ArrayObject([
+            'type' => 'object',
+            'properties' => [
+                'username' => [
+                    'type' => 'string',
+                    'example ' => 'john@doe.fr',
+                ],
+                'password' => [
+                    'type' => 'string',
+                    'example ' => '0000',
                 ]
             ]
-        );
+        ]);
 
         $openApi
             ->getPaths()
-            ->addPath(
-                '/api/login', new PathItem(
-                    post: new Operation(
-                        operationId: 'postApiLogin',
-                        tags: ['Auth'],
-                        responses: [
-                            '200' => [
-                                'description' => 'Utilisateur connecté',
-                                'content' => [
-                                    'application/json' => [
-                                        'schema' => [
-                                            '$ref' => '#/components/schemas/User-read.User'
-                                        ]
+            ->addPath('/api/login', new PathItem(
+                post: new Operation(
+                    operationId: 'postApiLogin',
+                    tags: ['Auth'],
+                    requestBody: new RequestBody(
+                        content: new ArrayObject([
+                            'application/json' => [
+                                'schema' => [
+                                    '$ref' => '#/components/schemas/Credentials'
+
+                                ]
+                            ]
+
+                        ])
+                    ),
+                    responses: [
+                        '200' => [
+                            'description' => 'Utilisateur connecté',
+                            'content' => [
+                                'application/json' => [
+                                    'schema' => [
+                                        '$ref' => '#/components/schemas/User-read.collection'
                                     ]
                                 ]
                             ]
-                        ],
-                        requestBody: new RequestBody(
-                            content: new ArrayObject(
-                                [
-                                    'application/json' => [
-                                        'schema' => [
-                                            '$ref' => '#/components/schemas/Credentials'
-
-                                        ]
-                                    ]
-
-                                ]
-                            )
-                        )
-                    )
+                        ]
+                    ]
                 )
-            );
+            ));
 
         return $openApi;
     }

@@ -1,5 +1,5 @@
 import React, { Fragment, useEffect, useState } from "react";
-import { Link, NavLink } from "react-router-dom";
+import { Navigate, NavLink, useNavigate } from "react-router-dom";
 import Dropdown from "./DropdownCart";
 import AuthService from "../services/auth.service";
 import EventBus from "../common/EventBus.js";
@@ -12,7 +12,9 @@ function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-const Navbar = () => {
+const Navbar = ({ setCategory }) => {
+  const navigate = useNavigate();
+
   const { cartTotalQuantity } = useSelector((state) => state.cart); //counttotalquantity
 
   const [datacategories, setDataCategories] = useState([]);
@@ -25,7 +27,6 @@ const Navbar = () => {
     try {
       return JSON.parse(atob(token.split(".")[1]));
     } catch (e) {
-      console.warn(e);
       return null;
     }
   };
@@ -64,11 +65,9 @@ const Navbar = () => {
   const getCategories = async () => {
     try {
       const res = await axios.get("https://localhost:8000/api/categories");
-      // console.log(res.data['hydra:member'])
       setDataCategories(res.data["hydra:member"]);
-      // (res.data)
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -107,13 +106,18 @@ const Navbar = () => {
                 leaveFrom="transform opacity-100 scale-100"
                 leaveTo="transform opacity-0 scale-95"
               >
-                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-md ring-1 ring-black ring-opacity-5 focus:outline-none">
+                <Menu.Items className="absolute right-0 mt-2 w-56 origin-top-right rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
                   <div className="py-1">
                     {datacategories.map((categorie) => (
                       <Menu.Item>
                         {({ active }) => (
-                          <Link
-                            to={`/?categorie=${categorie.slug}`}
+                          <div
+                            onClick={() => {
+                              // Navigate
+                              navigate("/");
+
+                              setCategory(categorie.slug);
+                            }}
                             className={classNames(
                               active
                                 ? "bg-gray-100 text-gray-900"
@@ -122,7 +126,7 @@ const Navbar = () => {
                             )}
                           >
                             {categorie.name}
-                          </Link>
+                          </div>
                         )}
                       </Menu.Item>
                     ))}

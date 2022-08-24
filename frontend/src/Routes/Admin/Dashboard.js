@@ -12,13 +12,12 @@ const Dashboard = () => {
     try {
       return JSON.parse(atob(token.split(".")[1]));
     } catch (e) {
-      console.warn(e);
       return null;
     }
   };
 
   const decodedJwt = parseJwt(user.token);
-  // // console.warn(parseJwt(user.token));
+  console.warn(parseJwt(user.token));
   // console.warn(user);
   const isAdmin = decodedJwt.roles.includes("ROLE_ADMIN");
 
@@ -26,7 +25,7 @@ const Dashboard = () => {
 
   return (
     <StyledDashboard>
-      <SideNav className="md:hidden">
+      <SideNav>
         <h3>Quick Links</h3>
         <NavLink
           className={({ isActive }) =>

@@ -4,13 +4,16 @@ import Button from "../../components/button";
 import Errors from "../../components/errors";
 import axios from "axios";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function Register() {
   const [firstname, setFirstName] = useState("");
   const [lastname, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const navigate = useNavigate();
   // const [password_confirmation, setPasswordConfirmation] = useState('')
   const [errors, setErrors] = useState([]);
 
@@ -20,6 +23,10 @@ export default function Register() {
     try {
       const resp = await axios.post("https://localhost:8000/api/users", user);
       console.log(resp.data);
+      navigate("/login");
+      toast.success("Félicitation, vous êtes inscrit avec succès", {
+         autoClose: 1500,
+      });
     } catch (error) {
       const { violations } = error.response.data;
       if (violations) {
@@ -36,11 +43,12 @@ export default function Register() {
   return (
     <>
       <div>
-        <title>Register</title>
+        <title>ergodnc — Register</title>
       </div>
 
-      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
+      <div className={"mx-auto w-1/2 rounded-lg bg-white p-5"}>
         <Errors className="mb-5" errors={errors} />
+        <ToastContainer position="top-right" outoClose={3000} />
         <div>
           <Label htmlFor="email">Prénom</Label>
 

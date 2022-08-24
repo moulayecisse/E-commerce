@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 // api/src/Serializer/UploadedFileDenormalizer.php
 
 namespace App\Serializer;

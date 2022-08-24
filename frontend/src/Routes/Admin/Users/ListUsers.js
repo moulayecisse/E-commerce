@@ -34,7 +34,9 @@ const ListUsers = () => {
         return user.id !== id;
       })
     );
-    toast.success("L'utilisateur a bien ete supprimé");
+    toast.success("L'utilisateur a bien ete supprimé", {
+       autoClose: 1500,
+    });
   };
 
   return (
@@ -96,7 +98,7 @@ const ListUsers = () => {
               ))}
             </>
           ) : (
-            <h4 className="text-center">No Products</h4>
+            <h4 className="text-center">No Users</h4>
           )}
         </table>
       </div>

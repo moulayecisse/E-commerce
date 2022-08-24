@@ -31,7 +31,7 @@ const SearchResult = () => {
       setData(res.data["hydra:member"]);
       // (res.data)
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
@@ -47,7 +47,7 @@ const SearchResult = () => {
       setDataCategories(res.data["hydra:member"]);
       // (res.data)
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

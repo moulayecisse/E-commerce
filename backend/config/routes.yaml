@@ -1,12 +1,12 @@
 controllers:
-    resource: ../src/Controller/
-    type: annotation
+  resource: ../src/Controller/
+  type: annotation
 
 kernel:
-    resource: ../src/Kernel.php
-    type: annotation
-api_login_check:
-    path: /api/login_check
+  resource: ../src/Kernel.php
+  type: annotation
+api_login:
+  path: /api/login
 authentication_token:
-    path: /api/login
-    methods: ['POST']
+  path: /api/login
+  methods: ["POST"]

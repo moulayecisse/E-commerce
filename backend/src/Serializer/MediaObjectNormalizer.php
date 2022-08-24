@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 // api/src/Serializer/MediaObjectNormalizer.php
 
 namespace App\Serializer;

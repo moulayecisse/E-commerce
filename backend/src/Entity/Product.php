@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -9,6 +8,8 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\OrderFilter;
 use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\ProductRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,11 +18,10 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
 #[Vich\Uploadable]
 #[ApiResource(
-    normalizationContext: ['groups' => ['read:collection']],
     paginationClientItemsPerPage: true,
+    normalizationContext: ['groups' => ['read:collection']],
 ),
-    ApiFilter(
-        SearchFilter::class, properties: ['id' => 'exact', 'categories.slug' => 'exact', 'name' => 'partial', 'description' => 'partial',]
+    ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'categories.slug' => 'exact', 'name' => 'partial', 'description' => 'partial',]
     )]
 #[ApiFilter(OrderFilter::class, properties: [])]
 class Product
@@ -35,36 +35,41 @@ class Product
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     #[Groups(['read:collection'])]
-    private ?int $id = null;
+    private $id;
     #[Assert\NotBlank]
     #[Groups(['read:collection'])]
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name = null;
+    private $name;
     #[Assert\NotBlank]
     #[Groups(['read:collection'])]
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $slug = null;
+    private $slug;
     #[Assert\NotBlank]
     #[Groups(['read:collection'])]
     #[ORM\Column(type: 'text', nullable: true)]
-    private ?string $description = null;
+    private $description;
     #[Assert\NotBlank]
     #[Groups(['read:collection'])]
     #[ORM\Column(type: 'float', nullable: true)]
-    private ?float $price = null;
+    private $price;
     #[Assert\NotBlank]
     #[Groups(['read:collection'])]
     #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $stock = null;
+    private $stock;
     #[Groups(['read:collection'])]
     #[ORM\ManyToOne(targetEntity: Categories::class)]
-    private ?Categories $categories = null;
+    private $categories;
     #[Groups(['read:collection'])]
-    #[ORM\Column(options: ['default', 0])]
+    #[ORM\Column(nullable: true, options: ['default', 0])]
     private ?int $click = null;
 
-    #[ORM\Column(nullable: true)]
-    private ?float $weight = null;
+    #[ORM\OneToMany(mappedBy: 'product_id', targetEntity: Notation::class)]
+    private Collection $notations;
+
+    public function __construct()
+    {
+        $this->notations = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -155,26 +160,32 @@ class Product
         return $this;
     }
 
-    public function getImage(): ?MediaObject
+    /**
+     * @return Collection<int, Notation>
+     */
+    public function getNotations(): Collection
     {
-        return $this->image;
+        return $this->notations;
     }
 
-    public function setImage(?MediaObject $image): self
+    public function addNotation(Notation $notation): self
     {
-        $this->image = $image;
+        if (!$this->notations->contains($notation)) {
+            $this->notations->add($notation);
+            $notation->setProductId($this);
+        }
 
         return $this;
     }
 
-    public function getWeight(): ?float
+    public function removeNotation(Notation $notation): self
     {
-        return $this->weight;
-    }
-
-    public function setWeight(?float $weight): self
-    {
-        $this->weight = $weight;
+        if ($this->notations->removeElement($notation)) {
+            // set the owning side to null (unless already changed)
+            if ($notation->getProductId() === $this) {
+                $notation->setProductId(null);
+            }
+        }
 
         return $this;
     }

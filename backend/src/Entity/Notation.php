@@ -3,63 +3,62 @@
 namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
-use DateTimeInterface;
+use App\Repository\NotationRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Notation
- */
-#[ORM\Table(name: 'notation')]
-#[ORM\Index(name: 'notation_product_id_fk', columns: ['product_id'])]
-#[ORM\Index(name: 'foreign_key_name', columns: ['user_id'])]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: NotationRepository::class)]
 #[ApiResource]
 class Notation
 {
-    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
-    #[ORM\Column(name: 'product_id', type: 'integer', nullable: false)]
-    private int $productId;
-    #[ORM\Column(name: 'notation_date', type: Types::DATETIME_MUTABLE, nullable: true)]
-    private string|DateTimeInterface|null $notationDate = null;
-    #[ORM\Column(name: 'commentary', type: 'text', length: 65535, nullable: true)]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notations')]
+    private ?Product $product_id = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $notation_date = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $commentary = null;
-    #[ORM\Column(name: 'suggestions', type: 'text', length: 65535, nullable: true)]
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $suggestions = null;
-    #[ORM\Column(name: 'ranking_stars', type: 'integer', nullable: true)]
-    private ?int $rankingStars = null;
-    #[ORM\ManyToOne(targetEntity: 'User')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    private User $user;
+
+    #[ORM\Column(nullable: true)]
+    private ?int $ranking_stars = null;
+
+    #[ORM\ManyToOne(inversedBy: 'notations')]
+    private ?User $user_id = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    public function getProductId(): ?int
+    public function getProductId(): ?Product
     {
-        return $this->productId;
+        return $this->product_id;
     }
 
-    public function setProductId(int $productId): self
+    public function setProductId(?Product $product_id): self
     {
-        $this->productId = $productId;
+        $this->product_id = $product_id;
 
         return $this;
     }
 
-    public function getNotationDate(): ?DateTimeInterface
+    public function getNotationDate(): ?\DateTimeInterface
     {
-        return $this->notationDate;
+        return $this->notation_date;
     }
 
-    public function setNotationDate(?DateTimeInterface $notationDate): self
+    public function setNotationDate(\DateTimeInterface $notation_date): self
     {
-        $this->notationDate = $notationDate;
+        $this->notation_date = $notation_date;
 
         return $this;
     }
@@ -90,24 +89,24 @@ class Notation
 
     public function getRankingStars(): ?int
     {
-        return $this->rankingStars;
+        return $this->ranking_stars;
     }
 
-    public function setRankingStars(?int $rankingStars): self
+    public function setRankingStars(?int $ranking_stars): self
     {
-        $this->rankingStars = $rankingStars;
+        $this->ranking_stars = $ranking_stars;
 
         return $this;
     }
 
-    public function getUser(): ?User
+    public function getUserId(): ?User
     {
-        return $this->user;
+        return $this->user_id;
     }
 
-    public function setUser(?User $user): self
+    public function setUserId(?User $user_id): self
     {
-        $this->user = $user;
+        $this->user_id = $user_id;
 
         return $this;
     }

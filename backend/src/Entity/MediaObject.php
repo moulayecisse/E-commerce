@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 // api/src/Entity/MediaObject.php
 namespace App\Entity;
 
@@ -17,6 +16,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
  */
 #[ORM\Entity]
 #[ApiResource(
+    iri: 'https://schema.org/MediaObject',
+    itemOperations: ['get'],
     collectionOperations: [
         'get',
         'post' => [
@@ -41,9 +42,7 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
                 ],
             ],
         ],
-    ],
-    iri: 'https://schema.org/MediaObject',
-    itemOperations: ['get']
+    ]
 )]
 class MediaObject
 {
@@ -64,17 +63,5 @@ class MediaObject
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getFilePath(): ?string
-    {
-        return $this->filePath;
-    }
-
-    public function setFilePath(?string $filePath): self
-    {
-        $this->filePath = $filePath;
-
-        return $this;
     }
 }

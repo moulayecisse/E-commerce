@@ -25,16 +25,6 @@ const UpdateProduct = () => {
     setSlug(product.slug);
     setStock(product.stock);
     setCategories(`api/categories/${product.categories.id}`);
-
-    console.log(
-      "mdrxd : ",
-      product.name,
-      product.description,
-      product.price,
-      product.slug,
-      product.stock,
-      `api/categories/${product.categories.id}`
-    );
   };
 
   const [datacategories, setDataCategories] = useState([]);
@@ -71,41 +61,30 @@ const UpdateProduct = () => {
 
   const updateProduct = async () => {
     const product = { description, name, price, slug, stock, categories };
+    console.log("here is your product", product);
     product.price = parseFloat(product.price);
     product.stock = parseInt(product.stock);
 
+    console.log("product", product);
+
     try {
       console.log(product);
-      const resp = await axios
-        .request({
-          method: "PATCH",
-          url: "https://localhost:8000/api/products/" + id,
+      const resp = await axios.put(
+        "https://localhost:8000/api/products/" + id,
+        product,
+        {
           headers: {
-            accept: "application/ld+json",
-            "Content-Type": "application/merge-patch+json",
+            "Content-Type": "application/json",
           },
-          data: JSON.stringify({
-            name: name,
-            slug: slug,
-            description: "description",
-            price: parseFloat(product.price),
-            stock: parseInt(product.stock),
-            categories: "/api/categories/2",
-          }),
-        })
-        .then(function (response) {
-          console.log(response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+        }
+      );
       navigate(-1);
       console.log(resp.data);
     } catch (error) {
       if (error.response) {
         console.log(error);
 
-        //  setErrors(Object.values(error.response.data.validation_errors))
+        // setErrors(Object.values(error.response.data.validation_errors))
       }
     }
   };

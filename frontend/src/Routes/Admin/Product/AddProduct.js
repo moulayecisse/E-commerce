@@ -94,7 +94,9 @@ export default function Register() {
         product
       );
       console.log(resp.data);
-      toast.success("Votre article a bien éte ajouté");
+      toast.success("Votre article a bien éte ajouté", {
+         autoClose: 1500,
+      });
       navigate(-1);
     } catch (error) {
       if (error.response) {

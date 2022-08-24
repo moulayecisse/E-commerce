@@ -34,32 +34,29 @@ const ListProducts = () => {
         return item.id !== id;
       })
     );
-    toast.success("Votre article a bien ete supprimé");
+    toast.success("Votre article a bien ete supprimé", {
+       autoClose: 1500,
+    });
   };
 
   return (
     <div className="container mx-auto">
-      <button
-        onClick={() => navigate(-1)}
-        className="z-90 fixed bottom-8 right-8 h-16 w-16 rounded-full border-0 bg-indigo-200 text-xl font-bold text-black drop-shadow-md "
-      >
-        Back
-      </button>
       <ToastContainer position="top-right" outoClose={3000} />
       <div className="mx-auto w-3/5">
         <NavLink
           to="/admin/product/add"
-          className="rounded-full bg-indigo-500 py-2 px-4 font-bold text-white hover:bg-indigo-500"
+          className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
         >
           {" "}
           Ajouter article
         </NavLink>
-        <h1 className="text-xl font-bold ">Products</h1>
+        <h1 className="text-3xl font-bold ">Products</h1>
         <table className="mx-auto table-auto">
           <thead>
             <tr>
               <th className="px-4 py-2">Nom de produit</th>
               <th className="px-4 py-2">Image</th>
+              <th className="px-4 py-2">Categorie</th>
               <th className="px-4 py-2">Description</th>
               <th className="px-4 py-2">Prix</th>
               <th className="px-4 py-2">Stock</th>
@@ -72,7 +69,7 @@ const ListProducts = () => {
             <>
               {data.map((item, index) => (
                 <tbody>
-                  <tr key={index}>
+                  <tr className="bg-gray-100">
                     <td className="border px-4 py-2">{item.name}</td>
                     <td className="border px-4 py-2">
                       {" "}
@@ -85,6 +82,7 @@ const ListProducts = () => {
                       )}
                     </td>
 
+                    <td className="border px-4 py-2">{item.categories.name}</td>
                     <td className="border px-4 py-2">{item.description}</td>
                     <td className="border px-4 py-2">{item.price}€</td>
                     <td className="border px-4 py-2">
@@ -93,7 +91,7 @@ const ListProducts = () => {
 
                     <td className="border px-4 py-2">
                       <NavLink
-                        className="rounded-full bg-indigo-500 py-2 px-4 font-bold text-white hover:bg-indigo-500"
+                        className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
                         to={`/admin/product/edit/${item.id}`}
                       >
                         Edit
@@ -101,7 +99,7 @@ const ListProducts = () => {
                     </td>
                     <td className="border px-4 py-2">
                       <button
-                        className="rounded-full bg-indigo-500 py-2 px-4 font-bold text-white hover:bg-indigo-500"
+                        className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
                         onClick={() => deleteProduct(item.id)}
                       >
                         Delete
@@ -112,7 +110,7 @@ const ListProducts = () => {
               ))}
             </>
           ) : (
-            <></>
+            <h4 className="text-center">No Products</h4>
           )}
         </table>
       </div>

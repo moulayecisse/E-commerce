@@ -10,7 +10,7 @@ const UpdateCategories = () => {
   const { id } = useParams();
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
-  const [errors] = useState([]);
+  const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -23,7 +23,7 @@ const UpdateCategories = () => {
       const res = await axios.get(
         "https://localhost:8000/api/categories/" + id
       );
-      console.warn(id);
+      console.log(res);
       setData(res.data);
       // (res.data)
     } catch (error) {
@@ -32,28 +32,12 @@ const UpdateCategories = () => {
   };
   const updateCategorie = async () => {
     const categorie = { name, slug };
-    console.warn(id);
     try {
       console.log(categorie);
-      const resp = await axios
-        .request({
-          method: "PATCH",
-          url: "https://localhost:8000/api/categories/1",
-          headers: {
-            accept: "application/ld+json",
-            "Content-Type": "application/merge-patch+json",
-          },
-          data: JSON.stringify({
-            name: name,
-            slug: slug,
-          }),
-        })
-        .then(function (response) {
-          console.warn(response.data);
-        })
-        .catch(function (error) {
-          console.error(error);
-        });
+      const resp = await axios.post(
+        "https://localhost:8000/api/categories",
+        categorie
+      );
       console.log(resp.data);
       navigate(-1);
     } catch (error) {
@@ -69,7 +53,7 @@ const UpdateCategories = () => {
         <title>E-commerce ajouter categorie</title>
       </div>
 
-      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
+      <div className={"mx-auto w-1/2 rounded-lg bg-white p-5"}>
         <Errors className="mb-5" errors={errors} />
 
         <div>

@@ -115,12 +115,12 @@
                     }
                 },
                 "url": {
-                    "raw": "{{url}}api/login_check",
+                    "raw": "{{url}}api/login",
                     "host": [
                         "{{url}}api"
                     ],
                     "path": [
-                        "login_check"
+                        "login"
                     ]
                 }
             },

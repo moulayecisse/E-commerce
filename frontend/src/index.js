@@ -24,15 +24,6 @@ const store = configureStore({
 
 store.dispatch(productsFetch());
 store.dispatch(getTotals());
-// const backup = console.warn;
-
-// console.error = function filterWarnings(msg) {
-//   const supressedWarnings = ["lid DOM prop", "validateDOMNesting", "Invalid"];
-
-//   if (!supressedWarnings.some((entry) => msg.includes(entry))) {
-//     backup.apply(console, arguments);
-//   }
-// };
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(

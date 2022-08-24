@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 
 namespace App\Entity;
 
@@ -16,15 +15,15 @@ class Categories
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     #[Groups(['read:collection'])]
-    private ?int $id = null;
+    private $id;
 
     #[Groups(['read:collection'])]
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $name = null;
+    private $name;
 
     #[Groups(['read:collection'])]
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $slug = null;
+    private $slug;
 
     public function getId(): ?int
     {

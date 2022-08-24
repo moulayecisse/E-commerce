@@ -30,14 +30,16 @@ const ListCategories = () => {
         return item.id !== id;
       })
     );
-    toast.success("L'articlea bien été supprimé");
+    toast.success("L'articlea bien été supprimé", {
+       autoClose: 1500,
+    });
   };
 
   return (
     <div className="container mx-auto">
       <button
         onClick={() => navigate(-1)}
-        className="z-90 fixed bottom-8 right-8 h-16 w-16 rounded-full border-0 bg-indigo-200 text-xl font-bold text-black drop-shadow-md "
+        className="rounded-full bg-violet-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
       >
         Back
       </button>
@@ -45,12 +47,12 @@ const ListCategories = () => {
       <div className="mx-auto w-3/5">
         <NavLink
           to="/admin/categorie/add"
-          className="rounded-full bg-indigo-500 py-2 px-4 font-bold text-white hover:bg-indigo-500"
+          className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
         >
           {" "}
           Ajouter categorie
         </NavLink>
-        <h1 className="text-xl font-bold ">Categories</h1>
+        <h1 className="text-3xl font-bold ">Categories</h1>
         <table className="mx-auto table-auto">
           <thead>
             <tr>
@@ -65,12 +67,18 @@ const ListCategories = () => {
             <>
               {data.map((item, index) => (
                 <tbody>
-                  <tr key={index}>
+                  <tr className="bg-gray-100">
                     <td className="border px-4 py-2">{item.name}</td>
 
+                    {/* {item.categories.map((c) =>(
+<>
+   <td className="border px-4 py-2">{c.name}</td> 
+</>
+
+))} */}
                     <td className="border px-4 py-2">
                       <NavLink
-                        className="rounded-full bg-indigo-500 py-2 px-4 font-bold text-white hover:bg-indigo-500"
+                        className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
                         to={`/admin/categorie/edit/${item.id}`}
                       >
                         Edit
@@ -78,7 +86,7 @@ const ListCategories = () => {
                     </td>
                     <td className="border px-4 py-2">
                       <button
-                        className="rounded-full bg-indigo-500 py-2 px-4 font-bold text-white hover:bg-indigo-500"
+                        className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
                         onClick={() => deleteProduct(item.id)}
                       >
                         Delete
@@ -89,7 +97,7 @@ const ListCategories = () => {
               ))}
             </>
           ) : (
-            <h3 className="text-center">No Products</h3>
+            <h4 className="text-center">No Products</h4>
           )}
         </table>
       </div>

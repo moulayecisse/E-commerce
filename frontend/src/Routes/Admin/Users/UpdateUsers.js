@@ -11,7 +11,7 @@ const UpdateUsers = () => {
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
-  const [errors] = useState([]);
+  const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     console.warn(id);
@@ -23,34 +23,29 @@ const UpdateUsers = () => {
   const getUser = async () => {
     try {
       const res = await axios.get("https://localhost:8000/api/users/" + id);
-      console.warn(id);
+      fillEmptyField(res.data);
       setData(res.data);
-      // (res.data)
     } catch (error) {
       console.log(error);
     }
   };
+
+  const fillEmptyField = (data) => {
+    const user = data;
+    setFirstname(user.firstname);
+    setLastname(user.lastname);
+    setEmail(user.email);
+  };
+
   const updateUser = async () => {
     const user = { firstname, lastname, email };
     console.warn(id);
     try {
       console.log(user);
       const resp = await axios
-        .request({
-          method: "PATCH",
-          url: "https://localhost:8000/api/users/1",
-          headers: {
-            accept: "application/ld+json",
-            "Content-Type": "application/merge-patch+json",
-          },
-          data: JSON.stringify({
-            firstname: firstname,
-            lastname: lastname,
-            email: email,
-          }),
-        })
+        .put("https://localhost:8000/api/users/" + id, user)
         .then(function (response) {
-          console.warn(response.data);
+          console.log(response.data);
         })
         .catch(function (error) {
           console.error(error);
@@ -60,7 +55,7 @@ const UpdateUsers = () => {
     } catch (error) {
       if (error.response) {
         console.log(error);
-        // setErrors(Object.values(error.response.data.validation_errors))
+        setErrors(Object.values(error.response.data.validation_errors));
       }
     }
   };

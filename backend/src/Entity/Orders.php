@@ -1,31 +1,51 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Entity;
 
+use ApiPlatform\Core\Annotation\ApiFilter;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
 use App\Repository\OrdersRepository;
+use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 
-/**
- * Orders
- */
-#[ORM\Table(name: 'orders')]
-#[ORM\Index(name: 'IDX_E52FFDEEA76ED395', columns: ['user_id'])]
 #[ORM\Entity(repositoryClass: OrdersRepository::class)]
-#[ApiResource]
+#[ApiResource(normalizationContext: ['groups' => ['read:collection']])]
+#[ApiFilter(SearchFilter::class, properties: ['user.id' => 'exact',])]
 class Orders
 {
-    #[ORM\Column(name: 'id', type: 'integer', nullable: false)]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: 'IDENTITY')]
-    private int $id;
-    #[ORM\Column(name: 'reference', type: 'string', length: 255, nullable: false)]
-    private string $reference;
-    #[ORM\ManyToOne(targetEntity: 'User')]
-    #[ORM\JoinColumn(name: 'user_id', referencedColumnName: 'id')]
-    private User $user;
+    #[ORM\GeneratedValue]
+    #[Groups(['read:collection'])]
+    #[ORM\Column(type: 'integer')]
+    private $id;
+
+    #[Groups(['read:collection'])]
+    #[ORM\Column(type: 'string', length: 255)]
+    private $reference;
+
+    #[Groups(['read:collection'])]
+    #[ORM\ManyToOne(targetEntity: User::class)]
+    #[ORM\JoinColumn(nullable: false)]
+    private $user;
+
+    #[ORM\OneToMany(mappedBy: 'orders', targetEntity: OrdersDetails::class)]
+    private Collection $ordersDetails;
+
+    #[Groups(['read:collection'])]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTimeInterface $date = null;
+
+    private $status = null;
+
+    public function __construct()
+    {
+        $this->ordersDetails = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -52,6 +72,60 @@ class Orders
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, OrdersDetails>
+     */
+    public function getOrdersDetails(): Collection
+    {
+        return $this->ordersDetails;
+    }
+
+    public function addOrdersDetail(OrdersDetails $ordersDetail): self
+    {
+        if (!$this->ordersDetails->contains($ordersDetail)) {
+            $this->ordersDetails[] = $ordersDetail;
+            $ordersDetail->setOrders($this);
+        }
+
+        return $this;
+    }
+
+    public function removeOrdersDetail(OrdersDetails $ordersDetail): self
+    {
+        if ($this->ordersDetails->removeElement($ordersDetail)) {
+            // set the owning side to null (unless already changed)
+            if ($ordersDetail->getOrders() === $this) {
+                $ordersDetail->setOrders(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getDate(): ?DateTimeInterface
+    {
+        return $this->date;
+    }
+
+    public function setDate(DateTimeInterface $date): self
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(string $status): self
+    {
+        $this->status = $status;
 
         return $this;
     }

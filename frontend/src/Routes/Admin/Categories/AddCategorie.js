@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const AddCategorie = () => {
   const [name, setName] = useState("");
   const [slug, setSlug] = useState("");
-  const [errors] = useState([]);
+  const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
 
   const addCategorie = async () => {
@@ -36,11 +36,11 @@ const AddCategorie = () => {
       </div>
       <button
         onClick={() => navigate(-1)}
-        className="z-90 fixed bottom-8 right-8 h-16 w-16 rounded-full border-0 bg-indigo-200 text-xl font-bold text-black drop-shadow-md "
+        className="rounded-full bg-violet-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
       >
         Back
       </button>
-      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
+      <div className={"mx-auto w-1/2 rounded-lg bg-white p-5"}>
         <Errors className="mb-5" errors={errors} />
 
         <div>

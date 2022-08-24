@@ -1,5 +1,4 @@
 <?php
-declare(strict_types=1);
 // api/src/Controller/CreateMediaObjectAction.php
 
 namespace App\Controller;

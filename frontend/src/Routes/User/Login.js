@@ -20,10 +20,15 @@ const Login = () => {
       setLoading(false);
       navigate("/");
       window.location.reload();
+      toast.success("Connecté avec succès", {
+        autoClose: 1500,
+      });
     } catch (error) {
       setLoading(false);
       console.log(error);
-      toast.success(error.response.data.message);
+      toast.success(error.response.data.message, {
+        autoClose: 1500,
+      });
     }
   };
 
@@ -33,7 +38,7 @@ const Login = () => {
         <title>E-commerce — Register</title>
       </div>
       <ToastContainer position="top-right" outoClose={3000} />
-      <div className={"mx-auto w-1/2 rounded bg-white p-5"}>
+      <div className={"mx-auto w-1/2 rounded-lg bg-white p-5"}>
         <div className="mt-4">
           <Label htmlFor="username">Email</Label>
 
@@ -65,7 +70,7 @@ const Login = () => {
             <div role="status">
               <svg
                 aria-hidden="true"
-                className="fill- indigo-500 mr-2 h-8 w-8 animate-spin text-gray-200 dark:text-gray-600"
+                className="mr-2 h-8 w-8 animate-spin fill-blue-600 text-gray-200 dark:text-gray-600"
                 viewBox="0 0 100 101"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
