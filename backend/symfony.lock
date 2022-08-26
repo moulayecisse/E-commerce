@@ -1,6 +1,6 @@
 {
     "api-platform/core": {
-        "version": "2.6",
+        "version": "2.7",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -28,7 +28,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "2.4",
-            "ref": "ddddd8249dd55bbda16fa7a45bb7499ef6f8e90e"
+            "ref": "da713d006953b90d1c085c1be480ecdd6c4a95e0"
         },
         "files": [
             "config/packages/doctrine.yaml",
@@ -54,7 +54,7 @@
             "repo": "github.com/symfony/recipes",
             "branch": "main",
             "version": "3.1",
-            "ref": "ee609429c9ee23e22d6fa5728211768f51ed2818"
+            "ref": "1d01ec03c6ecbd67c3375c5478c9a423ae5d6a33"
         },
         "files": [
             "config/packages/doctrine_migrations.yaml",
@@ -129,7 +129,7 @@
         ]
     },
     "symfony/maker-bundle": {
-        "version": "1.43",
+        "version": "1.47",
         "recipe": {
             "repo": "github.com/symfony/recipes",
             "branch": "main",
@@ -213,7 +213,7 @@
         ]
     },
     "vich/uploader-bundle": {
-        "version": "1.20",
+        "version": "1.21",
         "recipe": {
             "repo": "github.com/symfony/recipes-contrib",
             "branch": "main",

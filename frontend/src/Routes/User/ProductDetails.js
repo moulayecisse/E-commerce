@@ -10,7 +10,7 @@ function classNames(...classes) {
 }
 
 const ProductDetails = () => {
-  //les articles plus consultés
+  // les articles plus consultés
   let dispatch = useDispatch();
   let { id } = useParams();
   id = parseInt(id);
@@ -50,7 +50,7 @@ const ProductDetails = () => {
         headers: { accept: "application/json" },
       })
       .then(function (response) {
-        console.warn(response.data);
+        console.warn(response.data.click);
         setData(response.data);
         patchClick(response.data);
       })

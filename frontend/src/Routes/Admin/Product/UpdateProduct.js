@@ -29,7 +29,6 @@ const UpdateProduct = () => {
 
   const [datacategories, setDataCategories] = useState([]);
   const [item, setData] = useState([]);
-  console.log(item);
 
   useEffect(() => {
     getProduct();
@@ -39,18 +38,16 @@ const UpdateProduct = () => {
   const getCategories = async () => {
     try {
       const res = await axios.get("https://localhost:8000/api/categories");
-      console.log(res.data["hydra:member"]);
       setDataCategories(res.data["hydra:member"]);
       // (res.data)
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 
   const getProduct = async () => {
     try {
       const res = await axios.get("https://localhost:8000/api/products/" + id);
-      console.log("la dataaaa", res.data);
       fillEmptyField(res.data);
       setData(res.data);
       // (res.data)
@@ -61,7 +58,7 @@ const UpdateProduct = () => {
 
   const updateProduct = async () => {
     const product = { description, name, price, slug, stock, categories };
-    console.log("here is your product", product);
+    console.log("Here is your product", product);
     product.price = parseFloat(product.price);
     product.stock = parseInt(product.stock);
 
@@ -69,32 +66,33 @@ const UpdateProduct = () => {
 
     try {
       console.log(product);
-      const resp = await axios.put(
-        "https://localhost:8000/api/products/" + id,
-        product,
-        {
+      const resp = await axios
+        .request({
+          method: "PATCH",
+          url: "https://localhost:8000/api/products/" + id,
           headers: {
-            "Content-Type": "application/json",
+            accept: "application/ld+json",
+            "Content-Type": "application/merge-patch+json",
           },
-        }
-      );
+          data: product,
+        })
+        .then(function (response) {
+          console.log(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
       navigate(-1);
       console.log(resp.data);
     } catch (error) {
       if (error.response) {
         console.log(error);
-
-        // setErrors(Object.values(error.response.data.validation_errors))
       }
     }
   };
 
   return (
     <>
-      <div>
-        <title>E-commerce ajouter article</title>
-      </div>
-
       <div className={"mx-auto w-1/2 rounded-lg bg-white p-5"}>
         <Errors className="mb-5" errors={errors} />
 

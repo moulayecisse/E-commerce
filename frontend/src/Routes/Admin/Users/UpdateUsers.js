@@ -8,14 +8,21 @@ import { useNavigate, useParams } from "react-router-dom";
 
 const UpdateUsers = () => {
   const { id } = useParams();
+  const [checked, setChecked] = useState(false);
+  const handleChange = () => {
+    setChecked(!checked);
+    if (!checked) {
+      roles.push("ROLE_ADMIN");
+    }
+  };
   const [firstname, setFirstname] = useState("");
   const [lastname, setLastname] = useState("");
   const [email, setEmail] = useState("");
+  const [roles, setRoles] = useState([]);
   const [errors, setErrors] = useState([]);
   const navigate = useNavigate();
   useEffect(() => {
     console.warn(id);
-
     getUser();
   }, []);
 
@@ -23,6 +30,7 @@ const UpdateUsers = () => {
   const getUser = async () => {
     try {
       const res = await axios.get("https://localhost:8000/api/users/" + id);
+      console.warn(res.data);
       fillEmptyField(res.data);
       setData(res.data);
     } catch (error) {
@@ -34,16 +42,26 @@ const UpdateUsers = () => {
     const user = data;
     setFirstname(user.firstname);
     setLastname(user.lastname);
+    setRoles(user.roles);
     setEmail(user.email);
+    console.warn(user.roles);
   };
 
   const updateUser = async () => {
-    const user = { firstname, lastname, email };
+    const user = { firstname, lastname, email, roles };
     console.warn(id);
     try {
       console.log(user);
       const resp = await axios
-        .put("https://localhost:8000/api/users/" + id, user)
+        .request({
+          method: "PATCH",
+          url: "https://localhost:8000/api/users/" + id,
+          headers: {
+            accept: "application/ld+json",
+            "Content-Type": "application/merge-patch+json",
+          },
+          data: user,
+        })
         .then(function (response) {
           console.log(response.data);
         })
@@ -88,6 +106,15 @@ const UpdateUsers = () => {
             onChange={(event) => setLastname(event.target.value)}
             autoFocus
             autoComplete="off"
+          />
+        </div>
+        <div>
+          <Label htmlFor="email">Admin</Label>
+          <Input
+            id="role"
+            type="checkbox"
+            checked={checked}
+            onChange={handleChange}
           />
         </div>
         <div>

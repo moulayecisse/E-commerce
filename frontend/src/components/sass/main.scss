@@ -14,17 +14,15 @@ $br: 16px;
 .out_team {
   .our_team__member {
     text-align: center;
-
     .otm_img {
       overflow: hidden;
       border-radius: 15px;
       margin-bottom: 15px;
-
       img {
         display: block;
-        width: 100%;
-        height: 220px;
-        object-fit: cover;
+        width: 90%;
+        height: 99px;
+        object-fit: contain;
       }
     }
 
@@ -46,7 +44,7 @@ $br: 16px;
   overflow: hidden;
   box-shadow: 0px 0px 20px 2px #ccc;
   width: 260px;
-
+  margin-top: 2rem;
   .item_header {
     a {
       display: block;
@@ -62,13 +60,10 @@ $br: 16px;
       }
     }
   }
-
   .item_footer {
     padding: 15px;
-
     h3 {
       margin-top: 10px;
-
       a {
         color: $black;
       }
@@ -101,7 +96,6 @@ $br: 16px;
 
   &:hover {
     box-shadow: 0px 0px 25px 7px #ccc;
-
     .item_header {
       a {
         img {
@@ -109,7 +103,6 @@ $br: 16px;
         }
       }
     }
-
     .item_footer {
       h3 {
         a {

@@ -29,7 +29,7 @@ const Products = ({ category }) => {
           "order[id]": "DESC",
         },
       });
-       setData(data.data["hydra:member"]);
+      setData(data.data["hydra:member"]);
     };
 
     fetchData();

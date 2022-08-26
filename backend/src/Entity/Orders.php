@@ -42,6 +42,9 @@ class Orders
 
     private $status = null;
 
+    #[ORM\Column(nullable: true)]
+    private ?int $total_price = null;
+
     public function __construct()
     {
         $this->ordersDetails = new ArrayCollection();
@@ -126,6 +129,18 @@ class Orders
     public function setStatus(string $status): self
     {
         $this->status = $status;
+
+        return $this;
+    }
+
+    public function getTotalPrice(): ?int
+    {
+        return $this->total_price;
+    }
+
+    public function setTotalPrice(?int $total_price): self
+    {
+        $this->total_price = $total_price;
 
         return $this;
     }

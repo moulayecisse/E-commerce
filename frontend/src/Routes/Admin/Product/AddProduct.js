@@ -2,6 +2,7 @@ import Label from "../../../components/label";
 import Input from "../../../components/input";
 import Button from "../../../components/button";
 import Errors from "../../../components/errors";
+
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -70,7 +71,7 @@ export default function Register() {
       .catch((error) => console.error("error", error));
   };
   //console.log(imageId)
-  const addProduct = async (imgId, image) => {
+  const addProduct = async (imgId = 110, image) => {
     const click = 0;
     const product = {
       description,
@@ -88,16 +89,27 @@ export default function Register() {
     product.image = "api/media_objects/" + imgId;
 
     try {
+      axios
+        .request({
+          method: "POST",
+          url: "https://localhost:8000/api/products",
+          headers: {
+            accept: "application/ld+json",
+            "Content-Type": "application/ld+json",
+          },
+          data: product,
+        })
+        .then(function (response) {
+          console.log(response.data);
+          toast.success("Votre article a bien éte ajouté", {
+            autoClose: 1500,
+          });
+          navigate(-1);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
       console.log(product);
-      const resp = await axios.post(
-        "https://localhost:8000/api/products",
-        product
-      );
-      console.log(resp.data);
-      toast.success("Votre article a bien éte ajouté", {
-         autoClose: 1500,
-      });
-      navigate(-1);
     } catch (error) {
       if (error.response) {
         console.log(error);

@@ -7,6 +7,10 @@ import { Menu, Transition } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/solid";
 import { useSelector } from "react-redux";
 import axios from "axios";
+import ReactHover from "react-hover/dist/ReactHover";
+import { Hover, Trigger } from "react-hover";
+import Cart from "../Routes/User/Cart";
+import { Swiper, SwiperSlide } from "swiper/react";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
@@ -65,6 +69,7 @@ const Navbar = ({ setCategory }) => {
   const getCategories = async () => {
     try {
       const res = await axios.get("https://localhost:8000/api/categories");
+
       setDataCategories(res.data["hydra:member"]);
     } catch (error) {
       console.error(error);
@@ -77,12 +82,12 @@ const Navbar = ({ setCategory }) => {
         <main className="">
           <div className="relative z-10 mx-auto flex max-w-screen-lg flex-row items-center justify-between space-x-2 p-4 align-middle sm:space-x-3 sm:p-7">
             <NavLink
-              className="relative flex h-14 items-center items-center justify-between  px-5 drop-shadow-md"
+              className="relative flex h-14 items-center items-center justify-between px-5 drop-shadow-md"
               to="/"
             >
               <div>
                 <a href="#" className="text-2xl italic text-black">
-                  PC<span className="text-amber-500">Builder</span>
+                  Buy<span className="text-amber-500">Zone</span>
                 </a>
               </div>
             </NavLink>
@@ -145,7 +150,7 @@ const Navbar = ({ setCategory }) => {
               {showAdminBoard && (
                 <NavLink
                   to={"/admin/products"}
-                  className="ml-7 list-none whitespace-nowrap rounded  border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
+                  className="ml-7 list-none whitespace-nowrap rounded border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
                 >
                   Admin
                 </NavLink>
@@ -159,7 +164,7 @@ const Navbar = ({ setCategory }) => {
                   <NavLink
                     to={"/"}
                     onClick={logout}
-                    className="ml-7 list-none whitespace-nowrap rounded  border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
+                    className="ml-7 list-none whitespace-nowrap rounded border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
                   >
                     Logout
                   </NavLink>
@@ -168,14 +173,14 @@ const Navbar = ({ setCategory }) => {
                 <>
                   <NavLink
                     to={"/login"}
-                    className="ml-7 list-none whitespace-nowrap rounded  border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
+                    className="ml-7 list-none whitespace-nowrap rounded border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
                   >
                     Login
                   </NavLink>
 
                   <NavLink
                     to={"/register"}
-                    className="ml-7 list-none whitespace-nowrap rounded  border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
+                    className="ml-7 list-none whitespace-nowrap rounded border border-gray-300 px-4 py-2 text-gray-700 hover:border-gray-400"
                   >
                     Sign Up
                   </NavLink>
@@ -184,21 +189,31 @@ const Navbar = ({ setCategory }) => {
 
               <NavLink to={"/product/cart"}>
                 <div className="nav-bag">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="35"
-                    height="35"
-                    fill="currentColor"
-                    className="bi bi-handbag-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M8 1a2 2 0 0 0-2 2v2H5V3a3 3 0 1 1 6 0v2h-1V3a2 2 0 0 0-2-2zM5 5H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5H11v1.5a.5.5 0 0 1-1 0V5H6v1.5a.5.5 0 0 1-1 0V5z" />
-                  </svg>
+                  <ReactHover>
+                    <Trigger type="trigger">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="35"
+                        height="35"
+                        fill="currentColor"
+                        className="bi bi-handbag-fill"
+                        viewBox="0 0 16 16"
+                      >
+                        <path d="M8 1a2 2 0 0 0-2 2v2H5V3a3 3 0 1 1 6 0v2h-1V3a2 2 0 0 0-2-2zM5 5H3.36a1.5 1.5 0 0 0-1.483 1.277L.85 13.13A2.5 2.5 0 0 0 3.322 16h9.355a2.5 2.5 0 0 0 2.473-2.87l-1.028-6.853A1.5 1.5 0 0 0 12.64 5H11v1.5a.5.5 0 0 1-1 0V5H6v1.5a.5.5 0 0 1-1 0V5z" />
+                      </svg>
+                    </Trigger>
+                    <Hover type="hover">
+                      <div className="flex rounded border-2 border-solid backdrop-blur-3xl">
+                        <Cart />
+                      </div>
+                    </Hover>
+                  </ReactHover>
                   <span className="bag-quantity">
                     <span>{cartTotalQuantity}</span>
                   </span>
                 </div>
               </NavLink>
+
               <Dropdown />
             </>
           </div>

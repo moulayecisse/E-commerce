@@ -25,7 +25,7 @@ export default function Register() {
       console.log(resp.data);
       navigate("/login");
       toast.success("Félicitation, vous êtes inscrit avec succès", {
-         autoClose: 1500,
+        autoClose: 1500,
       });
     } catch (error) {
       const { violations } = error.response.data;

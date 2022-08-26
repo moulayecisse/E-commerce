@@ -1,0 +1,17 @@
+
+import * as XLSX from 'xlsx';
+import * as FileSaver from 'file-saver';
+
+export const ExportToExcel = ({ orderData }) => {
+    const fileType = "xlsx";
+    const exportToCSV = () => {
+        const wb = XLSX.utils.book_new();
+        const ws = XLSX.utils.json_to_sheet(orderData);
+        //  const wb = { Sheets: { data: ws}, SheetNames: ['data'] };
+        XLSX.utils.book_append_sheet(wb, ws, 'MySheet1');
+        XLSX.writeFile(wb, "excel.xlsx");
+
+
+    }
+
+}

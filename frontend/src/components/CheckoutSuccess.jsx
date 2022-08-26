@@ -48,7 +48,8 @@ const CheckoutSuccess = () => {
     const event = new Date(Date.now());
     const date = event.toISOString();
     const user = "api/users/" + userId;
-    const order = { reference, user, date };
+    const totalPrice = parseInt(cart.cartTotalAmount);
+    const order = { reference, user, date, totalPrice };
 
     console.log(order, "dataaa");
     try {

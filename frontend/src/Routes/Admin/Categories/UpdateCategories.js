@@ -18,6 +18,7 @@ const UpdateCategories = () => {
   }, []);
 
   const [data, setData] = useState([]);
+
   const getCategories = async () => {
     try {
       const res = await axios.get(
@@ -34,15 +35,26 @@ const UpdateCategories = () => {
     const categorie = { name, slug };
     try {
       console.log(categorie);
-      const resp = await axios.post(
-        "https://localhost:8000/api/categories",
-        categorie
-      );
-      console.log(resp.data);
+      const response = await axios
+        .request({
+          method: "PATCH",
+          url: "https://localhost:8000/api/categories/" + id,
+          headers: {
+            accept: "application/ld+json",
+            "Content-Type": "application/merge-patch+json",
+          },
+          data: categorie,
+        })
+        .then(function (response) {
+          console.warn(response.data);
+        })
+        .catch(function (error) {
+          console.error(error);
+        });
       navigate(-1);
     } catch (error) {
       if (error.response) {
-        console.log(error);
+        console.error(error);
         // setErrors(Object.values(error.response.data.validation_errors))
       }
     }

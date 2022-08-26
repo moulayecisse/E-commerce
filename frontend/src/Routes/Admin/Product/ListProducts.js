@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { NavLink, useNavigate } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
+import { NavLink, useNavigate, Outlet } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 const ListProducts = () => {
@@ -35,7 +35,7 @@ const ListProducts = () => {
       })
     );
     toast.success("Votre article a bien ete supprimé", {
-       autoClose: 1500,
+      autoClose: 1500,
     });
   };
 
@@ -99,7 +99,7 @@ const ListProducts = () => {
                     </td>
                     <td className="border px-4 py-2">
                       <button
-                        className="rounded-full bg-blue-500 py-2 px-4 font-bold text-white hover:bg-blue-700"
+                        className="rounded-full bg-red-700 py-2 px-4 font-bold text-white"
                         onClick={() => deleteProduct(item.id)}
                       >
                         Delete

@@ -1,0 +1,88 @@
+.container {
+  max-width: 1300px;
+  margin: 0 auto;
+  padding: 0px 15px;
+}
+
+.out_team .our_team__member {
+  text-align: center;
+}
+.out_team .our_team__member .otm_img {
+  overflow: hidden;
+  border-radius: 15px;
+  margin-bottom: 15px;
+}
+.out_team .our_team__member .otm_img img {
+  display: block;
+  width: 90%;
+  height: 99px;
+  -o-object-fit: contain;
+  object-fit: contain;
+}
+.out_team .our_team__member h3 {
+  color: #f55d22;
+  margin-bottom: 8px;
+}
+.out_team .our_team__member p {
+  font-size: 13px;
+  font-style: italic;
+}
+
+.item {
+  background: #f6f6f8;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0px 0px 20px 2px #ccc;
+  width: 260px;
+  margin-top: 2rem;
+}
+.item .item_header a {
+  display: block;
+  max-height: 210px;
+  overflow: hidden;
+}
+.item .item_header a img {
+  display: block;
+  width: 100%;
+  height: 220px;
+  -o-object-fit: cover;
+  object-fit: cover;
+  transition: all 0.2s;
+}
+.item .item_footer {
+  padding: 15px;
+}
+.item .item_footer h3 {
+  margin-top: 10px;
+}
+.item .item_footer h3 a {
+  color: #1a1a1a;
+}
+.item .item_footer p {
+  color: #5d5d5d;
+  font-size: 14px;
+}
+.item .item_footer .add {
+  display: block;
+  text-align: center;
+  border-radius: 16px;
+  background: #f55d22;
+  color: #fff;
+  padding: 7px 14px;
+  font-size: 14px;
+  margin-top: 20px;
+  position: relative;
+  overflow: hidden;
+}
+.item .item_footer .add:hover span {
+  top: 0;
+}
+.item:hover {
+  box-shadow: 0px 0px 25px 7px #ccc;
+}
+.item:hover .item_header a img {
+  transform: scale(1.2);
+}
+.item:hover .item_footer h3 a {
+  color: #f55d22;
+} /*# sourceMappingURL=main.css.map */

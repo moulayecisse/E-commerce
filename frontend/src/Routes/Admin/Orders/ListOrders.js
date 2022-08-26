@@ -1,9 +1,40 @@
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import moment from "moment";
-
+import { ExportToExcel } from "./excelFile";
+import { read, utils, writeFile } from "xlsx";
+import { useSelector } from "react-redux";
 const ListOrders = () => {
   const [data, setData] = useState([]);
+  //   const handleImport = ($event) => {
+  //     const files = $event.target.files;
+  //     if (files.length) {
+  //         const file = files[0];
+  //         const reader = new FileReader();
+  //         reader.onload = (event) => {
+  //             const wb = read(event.target.result);
+  //             const sheets = wb.SheetNames;
+
+  //             if (sheets.length) {
+  //                 const rows = utils.sheet_to_json(wb.Sheets[sheets[0]]);
+  //                 setData(rows)
+  //             }
+  //         }
+  //         reader.readAsArrayBuffer(file);
+  //     }
+  // }
+
+  const handleExport = (newdata) => {
+    const headings = [
+      ["Client", "Reference", "Product Name", "Price", "Order date"],
+    ];
+    const wb = utils.book_new();
+    const ws = utils.json_to_sheet([]);
+    utils.sheet_add_aoa(ws, headings);
+    utils.sheet_add_json(ws, newdata, { origin: "A2", skipHeader: true });
+    utils.book_append_sheet(wb, ws, "Report");
+    writeFile(wb, "Movie Report.xlsx");
+  };
 
   useEffect(() => {
     getData();
@@ -22,6 +53,8 @@ const ListOrders = () => {
   };
   return (
     <div className="container mx-auto">
+      <button onClick={handleExport}>Export</button>
+
       <div className="mx-auto w-3/5">
         <h1 className="mt-4 text-3xl font-bold">Orders</h1>
         <table className="mx-auto table-auto">
